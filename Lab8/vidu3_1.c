@@ -1,6 +1,6 @@
 /*
  *
- *   posix-unnamed-semaphore-example.c: Program to demonstrate POSIX 
+ *   vidu3_1.c: Program to demonstrate POSIX 
  *                                      unnamed semaphores in C under 
  *                                      Linux (Producer - Consumer problem)
  */

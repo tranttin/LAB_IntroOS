@@ -1,141 +1,115 @@
-/*
- *
- *   pthreads-synch.c: Program to demonstrate Pthreads
- *                     synchronization using mutex and 
- *                     condition variables in C under 
- *                     Linux (Producer - Consumer problem)
- */
-
-#include <sys/types.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
-#include <errno.h>
+/******************************************************************************
+* FILE: condvar.c
+* DESCRIPTION:
+*   Example code for using Pthreads condition variables.  The main thread
+*   creates three threads.  Two of those threads increment a "count" variable,
+*   while the third thread watches the value of "count".  When "count" 
+*   reaches a predefined limit, the waiting thread is signaled by one of the
+*   incrementing threads. The waiting thread "awakens" and then modifies
+*   count. The program continues until the incrementing threads reach
+*   TCOUNT. The main program prints the final value of count.
+* SOURCE: Adapted from example code in "Pthreads Programming", B. Nichols
+*   et al. O'Reilly and Associates. 
+* LAST REVISED: 03/07/17  Blaise Barney
+******************************************************************************/
 #include <pthread.h>
-#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-// Buffer data structures
-#define MAX_BUFFERS 10
-char buf [MAX_BUFFERS] [100];
-int buffer_index;
-int buffer_print_index;
+#define NUM_THREADS  3
+#define TCOUNT 10
+#define COUNT_LIMIT 12
 
-pthread_mutex_t buf_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t buf_cond = PTHREAD_COND_INITIALIZER;
-pthread_cond_t spool_cond = PTHREAD_COND_INITIALIZER;
-int buffers_available = MAX_BUFFERS;
-int lines_to_print = 0;
+int     count = 0;
+pthread_mutex_t count_mutex;
+pthread_cond_t count_threshold_cv;
 
-void *producer (void *arg);
-void *spooler (void *arg);
-
-int main (int argc, char **argv)
+void *inc_count(void *t) 
 {
-    pthread_t tid_producer [10], tid_spooler;
-    int i, r;
+  int i;
+  long my_id = (long)t;
 
-    // initialization
-    buffer_index = buffer_print_index = 0;
+  for (i=0; i < TCOUNT; i++) {
+    pthread_mutex_lock(&count_mutex);
+    count++;
 
-    // Create spooler
-    if ((r = pthread_create (&tid_spooler, NULL, spooler, NULL)) != 0) {
-        fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+    /* 
+    Check the value of count and signal waiting thread when condition is
+    reached.  Note that this occurs while mutex is locked. 
+    */
+    if (count == COUNT_LIMIT) {
+      printf("inc_count(): thread %ld, count = %d  Threshold reached. ",
+             my_id, count);
+      pthread_cond_signal(&count_threshold_cv);
+      printf("Just sent signal.\n");
+      }
+    printf("inc_count(): thread %ld, count = %d, unlocking mutex\n", 
+	   my_id, count);
+    pthread_mutex_unlock(&count_mutex);
+
+    /* Do some work so threads can alternate on mutex lock */
+    sleep(1);
     }
-
-    // Create 10 producer threads
-    int thread_no [10];
-    for (i = 0; i < 10; i++) {
-        thread_no [i] = i;
-        if ((r = pthread_create (&tid_producer [i], NULL, producer, (void *) &thread_no [i])) != 0) {
-            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-        }
-    }
-    // Wait for producers to terminate
-    for (i = 0; i < 10; i++)
-        if ((r = pthread_join (tid_producer [i], NULL)) == -1) {
-            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-        }
-    
-    // No more strings to print?
-    while (lines_to_print) sleep (1);
-    // terminate spooler
-    if ((r = pthread_cancel (tid_spooler)) != 0) {
-        fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-    }
-
-    exit (0);
+  pthread_exit(NULL);
 }
 
-// producer: produce strings for printing
-// There might be multiple producer threads
-void *producer (void *arg)
+void *watch_count(void *t) 
 {
-    // Create 10 strings and terminate
-    int i, r;
-    int my_id = *((int *) arg);
-    int count = 0;
+  long my_id = (long)t;
 
-    for (i = 0; i < 10; i++) {
+  printf("Starting watch_count(): thread %ld\n", my_id);
 
-        // Lock mutex
-        if ((r = pthread_mutex_lock (&buf_mutex)) != 0) {
-            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-        }
-
-            while (!buffers_available) 
-                pthread_cond_wait (&buf_cond, &buf_mutex);
-
-            int j = buffer_index;
-            buffer_index++;
-            if (buffer_index == MAX_BUFFERS)
-                buffer_index = 0;
-            buffers_available--;
-
-	    // Produce a string
-            sprintf (buf [j], "Thread %d: %d\n", my_id, ++count);
-            lines_to_print++;
-
-            pthread_cond_signal (&spool_cond);
-
-        // Unlock mutex
-        if ((r = pthread_mutex_unlock (&buf_mutex)) != 0) {
-            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-        }
-    
-        // Take a nap
-        sleep (1);
+  /*
+  Lock mutex and wait for signal.  Note that the pthread_cond_wait routine
+  will automatically and atomically unlock mutex while it waits. 
+  Also, note that if COUNT_LIMIT is reached before this routine is run by
+  the waiting thread, the loop will be skipped to prevent pthread_cond_wait
+  from never returning.
+  */
+  pthread_mutex_lock(&count_mutex);
+  while (count < COUNT_LIMIT) {
+    printf("watch_count(): thread %ld Count= %d. Going into wait...\n", my_id,count);
+    pthread_cond_wait(&count_threshold_cv, &count_mutex);
+    printf("watch_count(): thread %ld Condition signal received. Count= %d\n", my_id,count);
     }
+  printf("watch_count(): thread %ld Updating the value of count...\n", my_id);
+  count += 125;
+  printf("watch_count(): thread %ld count now = %d.\n", my_id, count);
+  printf("watch_count(): thread %ld Unlocking mutex.\n", my_id);
+  pthread_mutex_unlock(&count_mutex);
+  pthread_exit(NULL);
 }
 
-// There is only one spooler thread
-void *spooler (void *arg)
+int main(int argc, char *argv[])
 {
-    int r;
+  int i, rc; 
+  long t1=1, t2=2, t3=3;
+  pthread_t threads[3];
+  pthread_attr_t attr;
 
-    while (1) {  // forever
-        // Lock mutex
-        if ((r = pthread_mutex_lock (&buf_mutex)) != 0) {
-            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-        }
-            while (!lines_to_print) 
-                pthread_cond_wait (&spool_cond, &buf_mutex);
+  /* Initialize mutex and condition variable objects */
+  pthread_mutex_init(&count_mutex, NULL);
+  pthread_cond_init (&count_threshold_cv, NULL);
 
-            printf ("%s", buf [buffer_print_index]);
-            lines_to_print--;
+  /* For portability, explicitly create threads in a joinable state */
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+  pthread_create(&threads[0], &attr, watch_count, (void *)t1);
+  pthread_create(&threads[1], &attr, inc_count, (void *)t2);
+  pthread_create(&threads[2], &attr, inc_count, (void *)t3);
 
-            buffer_print_index++;
-            if (buffer_print_index == MAX_BUFFERS)
-               buffer_print_index = 0;
+  /* Wait for all threads to complete */
+  for (i = 0; i < NUM_THREADS; i++) {
+    pthread_join(threads[i], NULL);
+  }
+  printf ("Main(): Waited and joined with %d threads. Final value of count = %d. Done.\n", 
+          NUM_THREADS, count);
 
-            buffers_available++;
+  /* Clean up and exit */
+  pthread_attr_destroy(&attr);
+  pthread_mutex_destroy(&count_mutex);
+  pthread_cond_destroy(&count_threshold_cv);
+  pthread_exit (NULL);
 
-            pthread_cond_signal (&buf_cond);
-
-        // Unlock mutex
-        if ((r = pthread_mutex_unlock (&buf_mutex)) != 0) {
-            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
-        }
-
-    }
 }
+

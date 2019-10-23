@@ -1,161 +1,141 @@
-// Reader-Writer problem using monitors 
+/*
+ *
+ *   pthreads-synch.c: Program to demonstrate Pthreads
+ *                     synchronization using mutex and 
+ *                     condition variables in C under 
+ *                     Linux (Producer - Consumer problem)
+ */
 
-#include <iostream> 
-#include <pthread.h> 
-#include <unistd.h> 
-using namespace std; 
+#include <sys/types.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include <errno.h>
+#include <pthread.h>
+#include <unistd.h>
 
-class monitor { 
-private: 
-	// no. of readers 
-	int rcnt; 
+// Buffer data structures
+#define MAX_BUFFERS 10
+char buf [MAX_BUFFERS] [100];
+int buffer_index;
+int buffer_print_index;
 
-	// no. of writers 
-	int wcnt; 
+pthread_mutex_t buf_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t buf_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t spool_cond = PTHREAD_COND_INITIALIZER;
+int buffers_available = MAX_BUFFERS;
+int lines_to_print = 0;
 
-	// no. of readers waiting 
-	int waitr; 
+void *producer (void *arg);
+void *spooler (void *arg);
 
-	// no. of writers waiting 
-	int waitw; 
+int main (int argc, char **argv)
+{
+    pthread_t tid_producer [10], tid_spooler;
+    int i, r;
 
-	// condition variable to check whether reader can read 
-	pthread_cond_t canread; 
+    // initialization
+    buffer_index = buffer_print_index = 0;
 
-	// condition variable to check whether writer can write 
-	pthread_cond_t canwrite; 
+    // Create spooler
+    if ((r = pthread_create (&tid_spooler, NULL, spooler, NULL)) != 0) {
+        fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+    }
 
-	// mutex for synchronisation 
-	pthread_mutex_t condlock; 
+    // Create 10 producer threads
+    int thread_no [10];
+    for (i = 0; i < 10; i++) {
+        thread_no [i] = i;
+        if ((r = pthread_create (&tid_producer [i], NULL, producer, (void *) &thread_no [i])) != 0) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
+    }
+    // Wait for producers to terminate
+    for (i = 0; i < 10; i++)
+        if ((r = pthread_join (tid_producer [i], NULL)) == -1) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
+    
+    // No more strings to print?
+    while (lines_to_print) sleep (1);
+    // terminate spooler
+    if ((r = pthread_cancel (tid_spooler)) != 0) {
+        fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+    }
 
-public: 
-	monitor() 
-	{ 
-		rcnt = 0; 
-		wcnt = 0; 
-		waitr = 0; 
-		waitw = 0; 
+    exit (0);
+}
 
-		pthread_cond_init(&canread, NULL); 
-		pthread_cond_init(&canwrite, NULL); 
-		pthread_mutex_init(&condlock, NULL); 
-	} 
+// producer: produce strings for printing
+// There might be multiple producer threads
+void *producer (void *arg)
+{
+    // Create 10 strings and terminate
+    int i, r;
+    int my_id = *((int *) arg);
+    int count = 0;
 
-	// mutex provide synchronisation so that no other thread 
-	// can change the value of data 
-	void beginread(int i) 
-	{ 
-		pthread_mutex_lock(&condlock); 
+    for (i = 0; i < 10; i++) {
 
-		// if there are active or waiting writers 
-		if (wcnt == 1 || waitw > 0) { 
-			// incrementing waiting readers 
-			waitr++; 
+        // Lock mutex
+        if ((r = pthread_mutex_lock (&buf_mutex)) != 0) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
 
-			// reader suspended 
-			pthread_cond_wait(&canread, &condlock); 
-			waitr--; 
-		} 
+            while (!buffers_available) 
+                pthread_cond_wait (&buf_cond, &buf_mutex);
 
-		// else reader reads the resource 
-		rcnt++; 
-		cout << "reader " << i << " is reading\n"; 
-		pthread_mutex_unlock(&condlock); 
-		pthread_cond_broadcast(&canread); 
-	} 
+            int j = buffer_index;
+            buffer_index++;
+            if (buffer_index == MAX_BUFFERS)
+                buffer_index = 0;
+            buffers_available--;
 
-	void endread(int i) 
-	{ 
+	    // Produce a string
+            sprintf (buf [j], "Thread %d: %d\n", my_id, ++count);
+            lines_to_print++;
 
-		// if there are no readers left then writer enters monitor 
-		pthread_mutex_lock(&condlock); 
+            pthread_cond_signal (&spool_cond);
 
-		if (--rcnt == 0) 
-			pthread_cond_signal(&canwrite); 
+        // Unlock mutex
+        if ((r = pthread_mutex_unlock (&buf_mutex)) != 0) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
+    
+        // Take a nap
+        sleep (1);
+    }
+}
 
-		pthread_mutex_unlock(&condlock); 
-	} 
+// There is only one spooler thread
+void *spooler (void *arg)
+{
+    int r;
 
-	void beginwrite(int i) 
-	{ 
-		pthread_mutex_lock(&condlock); 
+    while (1) {  // forever
+        // Lock mutex
+        if ((r = pthread_mutex_lock (&buf_mutex)) != 0) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
+            while (!lines_to_print) 
+                pthread_cond_wait (&spool_cond, &buf_mutex);
 
-		// a writer can enter when there are no active 
-		// or waiting readers or other writer 
-		if (wcnt == 1 || rcnt > 0) { 
-			++waitw; 
-			pthread_cond_wait(&canwrite, &condlock); 
-			--waitw; 
-		} 
-		wcnt = 1; 
-		cout << "writer " << i << " is writing\n"; 
-		pthread_mutex_unlock(&condlock); 
-	} 
+            printf ("%s", buf [buffer_print_index]);
+            lines_to_print--;
 
-	void endwrite(int i) 
-	{ 
-		pthread_mutex_lock(&condlock); 
-		wcnt = 0; 
+            buffer_print_index++;
+            if (buffer_print_index == MAX_BUFFERS)
+               buffer_print_index = 0;
 
-		// if any readers are waiting, threads are unblocked 
-		if (waitr > 0) 
-			pthread_cond_signal(&canread); 
-		else
-			pthread_cond_signal(&canwrite); 
-		pthread_mutex_unlock(&condlock); 
-	} 
+            buffers_available++;
 
-} 
+            pthread_cond_signal (&buf_cond);
 
-// global object of monitor class 
-M; 
+        // Unlock mutex
+        if ((r = pthread_mutex_unlock (&buf_mutex)) != 0) {
+            fprintf (stderr, "Error = %d (%s)\n", r, strerror (r)); exit (1);
+        }
 
-void* reader(void* id) 
-{ 
-	int c = 0; 
-	int i = *(int*)id; 
-
-	// each reader attempts to read 5 times 
-	while (c < 5) { 
-		usleep(1); 
-		M.beginread(i); 
-		M.endread(i); 
-		c++; 
-	} 
-} 
-
-void* writer(void* id) 
-{ 
-	int c = 0; 
-	int i = *(int*)id; 
-
-	// each writer attempts to write 5 times 
-	while (c < 5) { 
-		usleep(1); 
-		M.beginwrite(i); 
-		M.endwrite(i); 
-		c++; 
-	} 
-} 
-
-int main() 
-{ 
-	pthread_t r[5], w[5]; 
-	int id[5]; 
-	for (int i = 0; i < 5; i++) { 
-		id[i] = i; 
-
-		// creating threads which execute reader function 
-		pthread_create(&r[i], NULL, &reader, &id[i]); 
-
-		// creating threads which execute writer function 
-		pthread_create(&w[i], NULL, &writer, &id[i]); 
-	} 
-
-	for (int i = 0; i < 5; i++) { 
-		pthread_join(r[i], NULL); 
-	} 
-	for (int i = 0; i < 5; i++) { 
-		pthread_join(w[i], NULL); 
-	} 
-} 
+    }
+}
