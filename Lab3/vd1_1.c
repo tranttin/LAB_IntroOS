@@ -3,6 +3,6 @@
 #include <unistd.h>
 int main() {
     printf("Current process ID: %d\n", getpid());
-    printf("Parent process ID: %d\n", getppid())
+    printf("Parent process ID: %d\n", getppid());
     return 0;
 }
