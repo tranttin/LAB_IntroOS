@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
             child_no = count;
             printf("Tien trinh %d, PID %d\n",child_no, getpid());
         } else {
-        for(count=0; count<pnum; count++) wait(NULL);
+        for(count=0; count<pnum; count++) wait(NULL);   //số lần gọi wait bằng số đứa con đã sinh ra (là pnum)
         printf("Tien trinh cha PID %d", getppid());
         }
     }
