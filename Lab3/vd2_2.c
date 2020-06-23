@@ -1,8 +1,9 @@
+#include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-
+ 
 int main(int argc, char *argv[])
 {
     int pnum, count, retval, child_no;
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
     }
     else {
         retval=1;
-        for(count=0, count<pnum; count++) {
+        for(count=0; count<pnum; count++) {
             if(retval!=0) retval=fork();
             else break;
         }
@@ -22,8 +23,9 @@ int main(int argc, char *argv[])
             printf("Tien trinh %d, PID %d\n",child_no, getpid());
         } else {
         for(count=0; count<pnum; count++) wait(NULL);
-        printf("Tien trinh cha PID %d", getpid());
+        printf("Tien trinh cha PID %d", getppid());
         }
     }
+
     return 0;
-}  
+} 
