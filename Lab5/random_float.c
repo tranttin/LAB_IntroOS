@@ -11,3 +11,6 @@ int main(int argc, char *argv[])
         printf("%f\n", ((float)rand()/(float)(RAND_MAX)) * a);
     return 0;
 }
+
+
+//      -1 + ((float)rand()/(float)(RAND_MAX)) * 2
