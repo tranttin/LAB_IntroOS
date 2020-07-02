@@ -1,60 +1,79 @@
-// CPP Program to find sum of array 
-#include <iostream> 
-#include <pthread.h> 
-#include <cstdlib>
-#include <ctime>
+
+#include <math.h>
+/* printf */
+#include <stdio.h>
+/* pthread_* */
+#include <pthread.h>
+/* clock */
+#include <time.h>
+/* gettimeofday */
+#include <sys/time.h>
+/* syscall */
+#include <sys/syscall.h>
+/* pid_t */
+#include <sys/types.h>
+/* open */
+#include <sys/stat.h>
+#include <fcntl.h>
+/* strrchr */
+#include <string.h>
   
-// kích thước array 
-#define MAX 16    
+
+#include <stdlib.h>
+
   
 // maximum number of threads 
-#define MAX_THREAD 4 
-#define MAX_POINT 10000
+#define MAX_THREAD 4
+int counter=0;
+
   
-using namespace std; 
-  
-int counter = 0; // tổng số điểm trong vòng tròn
-  
-void* random(void* arg) 
+void* seedpoint(void *arg) 
 { 
-  
-    // Part là "đoạn" trong dãy. Ta chia làm 4 đoạn  // Làm sao đánh đoạn tự động tăng từ 1 đến 4 (hay từ 0 đến 3)
-   for(int i=0; i<MAX_POINT;i++)
-   {
-   
-   // This will generate a number from some arbitrary LO to some arbitrary HI:
-   // srand (static_cast <unsigned> (time(0)));
-   //float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
-   
-   // random tọa độ X từ -1 đến 1, 
-     // random tọa độ Y từ -1 đến 1,
-     // tính khoảng cách (X,Y) đến gốc (0,0)
-     // nếu khoảng cách <= 1 thì nó thuộc hình tròn, tăng count.
-      
+srand((unsigned int)time(NULL));
+float x,y,distance;
+    int a = *((int *) arg);
+    
+
+  for(int i = 0; i< a ; i++ )
+{   x = -1 + ((float)rand()/(float)(RAND_MAX)) * 2;
+    y = -1 + ((float)rand()/(float)(RAND_MAX)) * 2;
+ 
+ distance = sqrt(x*x + y*y);
+if(distance <= 1.0) counter++;
+
+}
 
 } 
   
 // Chương trình chính.
-int main() 
+int main(int argc, char *argv[]) 
 { 
+  int n_thread = atoi(argv[1]);
+  int n_seed = atoi(argv[2]);
+  int *arg = malloc(sizeof(*arg));
+*arg = atoi(argv[2]);
         clock_t t1, t2; 
-  
+  struct timeval start2, end2;
     t1 = clock(); 
-    pthread_t threads[MAX_THREAD]; 
+gettimeofday(&start2, NULL);
+    pthread_t threads[n_thread]; 
   
-    // Creating 4 threads 
-    for (int i = 0; i <   ; i++) 
-        pthread_create(  ); 
+    // Creating MAX_THREAD threads 
+    for (int i = 0; i < n_thread  ; i++) 
+        pthread_create(&threads[i], NULL, seedpoint, arg);
   
-    // joining 4 threads i.e. waiting for all 4 threads to complete 
-    for (int i = 0; i <  ; i++) 
-        p 
-  
-    // tính và in ra giá trị số PI là  count / MAX_POINT * MAX_THREAD
+    // joining MAX_THREAD threads  
+    for (int i = 0; i < n_thread ; i++) 
+        pthread_join(threads[i], NULL); 
 
+
+   
+   printf("Uoc tinh PI =  %f\n", (float)counter / (n_thread*(int) *arg) *4);
+  
+  
       t2 = clock(); 
-          // time taken by merge sort in seconds 
-    cout << "Time taken: " << (t2 - t1) /  
-              (double)CLOCKS_PER_SEC << endl; 
+       gettimeofday(&end2, NULL);
+    printf(" clock() method: %ld clocks.\n", (t2 - t1) );
+	printf(" gettimeofday() method: %ldms\n", (end2.tv_sec - start2.tv_sec) *1000 + (end2.tv_usec - start2.tv_usec)/1000);
     return 0; 
 } 
