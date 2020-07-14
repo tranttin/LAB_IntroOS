@@ -1,17 +1,20 @@
 /* Cấu trúc chương trình
 Dữ liệu:
 - Mảng toàn cục chứa 1 triệu phần tử nguyên.
-- Biến số Balance toàn cục.
+- Biến số Index kiểm soát phần tử ở đỉnh Stack.
+
 main()
-- Sinh ngẫu nhiên giá trị 1000 phần từ cho mảng. Mỗi giá trị nếu là âm thì coi như rút tiền, nếu là dương thì coi như nộp tiền vào tài khoản.
-- Tỉnh tổng các giá trị của toàn bộ phần tử mảng. Đây cũng là giá trị số dư tài khoản sau cùng. (1)
-- Sinh ra 2 thread gọi 2 hàm deposit và withdraw.
-- Chờ thread kết thúc, so sánh giá trị Balance và Giá trị tính tại (1).
+- Sinh ngẫu nhiên giá trị cho mọi phần từ cho mảng. Mỗi giá trị nếu là âm thì coi như POP, nếu là dương thì coi như là PUSH.
+- Sinh ra 2 thread gọi 2 hàm pop và push.
+- Chờ thread kết thúc.
 - Đo thời gian chạy chương trình từ lúc sinh thread đến khi thread kết thúc.
-deposit()
-- Nếu phần tử mảng có giá trị dương thì tác động nộp tiền vào biến Balance toàn cục.
-withdraw()
-- Nếu phần tử mảng có giá trị âm thì tác động rút tiền từ biến Balance toàn cục.
+
+pop()
+- Nếu phần tử mảng có giá trị âm thì lấy một phần tử trên đỉnh stack ra và hiển thị "POP: x" với x là giá trị vừa lấy.
+- Nếu stack rỗng thì báo "Stack empty".
+
+push()
+- Nếu phần tử mảng có giá trị dương thì đẩy phần tử này vào stack.
 */
 
 */ Yêu cầu:
