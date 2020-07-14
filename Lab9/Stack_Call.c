@@ -15,9 +15,9 @@ pop()
 
 push()
 - Nếu phần tử mảng có giá trị dương thì đẩy phần tử này vào stack.
-*/
 
-*/ Yêu cầu:
+
+ Yêu cầu:
 1 - SV viết đoạn code mô tả bên trên, không tiến hành đồng bộ, đo thời gian.
 2 - SV sử dụng mutex lock để đồng bộ và đo thời gian.
 3 - SV sử dụng semaphore để đồng bộ và đo thời gian.
