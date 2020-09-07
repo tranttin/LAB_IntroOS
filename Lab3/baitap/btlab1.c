@@ -1,16 +1,18 @@
 #include <stdio.h> 
 #include <unistd.h> 
-int main() 
+int main( /*parameter declare*/) 
 {   pid_t pid;
+    // reading value of n from parameter
     pid = fork();
     if(pid < 0) printf("Fork error! No child created\n");
     else if(pid == 0)  {
-        printf("Hello from Child!\n");
-        printf("Child ID is %d!\n", getpid());
+        // calculate all of divisors and output to screen
+        
     }
     else { 
-       printf("Hello from Parent!\n");
-       printf("Parent ID is %d!\n", getpid());
+       // calculate value S = 1 + 2 + ... + n
+       // output to screen.
+       // wait for child
     }
     return 0; 
 }
