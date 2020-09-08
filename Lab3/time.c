@@ -23,8 +23,7 @@ int main(int argc, char** argv) {
 	int i;
 	time_t start1, end1;
 	struct timeval start2, end2;
-	/* array pthreads_t */
-	pthread_t threads[NUM_THREADS];
+
 
 	/* ### start section to be measured ### */
 	/* clock() method */
@@ -32,15 +31,7 @@ int main(int argc, char** argv) {
 	/* gettimeofday() method */
 	gettimeofday(&start2, NULL);
 
-	/* create and start threads */
-	for(i=0; i<NUM_THREADS; i++) {
-		pthread_create(&threads[i], NULL, &thread_function, NULL);
-	}
-
-	/* wait for threads end */
-	for(i=0; i<NUM_THREADS; i++) {
-		pthread_join(threads[i], NULL);
-	}
+// cv can do
 
 	end1 = clock();
 	gettimeofday(&end2, NULL);
