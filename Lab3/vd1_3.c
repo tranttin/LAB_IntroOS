@@ -8,10 +8,11 @@ int main()
     else if(pid == 0)  {
         printf("Hello from Child!\n");
         printf("Child ID is %d!\n", getpid());
+        sleep(10);
     }
     else { 
        printf("Hello from Parent!\n");
-       printf("Parent ID is %d!\n", getpid());
+       printf("Parent ID is %d!\n", getppid());
     }
     return 0; 
 }
