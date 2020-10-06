@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 
    
-   printf("Uoc tinh PI =  %f\n", (float)counter / (n_thread*(int) *arg) *4);
+   printf("Uoc tinh PI =  %f\n", (float)counter / ((int) *arg) *4);
   
   
 
