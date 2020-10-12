@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
  pthread_create(&tid1, NULL, produce, (void*)&sleep1);
  pthread_create(&tid2, NULL, consume, (void*)&sleep2);
  pthread_join(tid1, NULL);
- pthread_join(tid2, NULL);
+ sleep(5); //stop program if nothing sent after 5 seconds.
 }
 
 void *produce(void *arg)
