@@ -80,3 +80,6 @@ gettimeofday(&start2, NULL);
 	printf(" gettimeofday() method: %ldms\n", (end2.tv_sec - start2.tv_sec) *1000 + (end2.tv_usec - start2.tv_usec)/1000);
     return 0; 
 } 
+
+	
+	//Call to exec:   ./a.out 4  1000000
