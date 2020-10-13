@@ -42,7 +42,8 @@ float x,y,distance;
 if(distance <= 1.0) {
 // 
 counter++;
-// }
+// 
+}
 
 }
 
