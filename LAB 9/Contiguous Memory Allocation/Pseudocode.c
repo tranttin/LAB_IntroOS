@@ -1,9 +1,12 @@
 
-bool mem[2000000000]; //maximum of int
+bool mem[1000000000]; //maximum of int
+struct process { name, int start, int end }
+array of struct process;
+
 int option=1;
 
 void function1()
-      hỏi kích thước tiến trình cần cấp bao nhiêu? size.
+      hỏi kích thước tiến trình cần cấp bao nhiêu? name, size.
       for i = 0 --> MAX-size
          if (mem[i] = false) then "mem[i] đến mem[i+size-1]" có trống hay không/có đều là false hay không. Nếu có thì cấp phát: gán toàn bộ mem[i] đoạn đó là true. Đồng thời ghi nhận lại "Tiến trình X đã được cấp mem từ i đến ..."
                
@@ -28,14 +31,14 @@ void function4()
      Cách 2: In ra danh mục "Tiến trình X đã được cấp mem từ i đến ..."
            
            
-main(    )
+main(    ) // hàm chính
 MAX = atoi(argv[1]);  // truyền kích thước vào khi gọi chạy 
 
 for(0 --> MAX - 1)   mem[i] = false //ban đầu bộ nhớ coi như trống hết.
 
 
-while(option != 5)
-{     print "Chọn option   1-Cap phat   2-Thu hoi   3-Gom cum   4-Thong ke"
+while(true)
+{     print "Chọn option   1-Cap phat   2-Thu hoi   3-Gom cum   4-Thong ke  5-Exit"
       scanf   option
       switch (option) of
       1  tạo tiểu trình A chạy hàm fun 1
