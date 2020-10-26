@@ -16,6 +16,10 @@ void function2()
      xóa thông tin "Tiến trình X đã được cấp mem từ i đến ..." ra khỏi danh mục (vì X coi như đã kết thúc)
 
 void function3()
+       for(i = 0 --> max)
+             if(a[i] = false) then "dời tiến trình liền sau đó lên a[i]". 
+                   
+            
 void function4()
                
      Cách 1:  for i = 0 --> MAX
