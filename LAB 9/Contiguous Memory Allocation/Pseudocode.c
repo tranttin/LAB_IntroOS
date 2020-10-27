@@ -19,8 +19,13 @@ void function2()
      xóa thông tin "Tiến trình X đã được cấp mem từ i đến ..." ra khỏi danh mục (vì X coi như đã kết thúc)
 
 void function3()
-       for(i = 0 --> max)
-             if(a[i] = false) then "dời tiến trình liền sau đó lên a[i]". 
+     CÁCH 1  for(i = 0 --> max)
+             if(a[i] = false) then 
+                  1. TÌM a[j] true tiếp theo
+                  2. Dò danh sách xem a[j] là start của tiến trình nào --> xác định size.
+                   3. Dòi mảng a[i] đến a[i+size-1] là true
+                   4. Mảng a[i+size] đến a[j+size-1] sẽ là false (do bị dời nên thành trống).
+                   5. Update start và end của tiến trình này/
                    
             
 void function4()
