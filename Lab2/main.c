@@ -1,5 +1,7 @@
-// hello2.c
+// main.c
 #include <stdio.h>
-void hello_2(int i) {
- printf("Hello, parameter 2 = %d\n", i);
+int main(int argc, char ** argv) {
+    int i = atoi(argv[1]);
+    int k = atoi(argv[2]);
+    hello_1(i);  hello_2(k);
 }
