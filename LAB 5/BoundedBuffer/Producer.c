@@ -21,10 +21,10 @@ int main() {
   int i;
   while(1) {          /* write MaxWrites times */
       printf ("\nProduer: ");
-      scanf(STDIN, "%s", str);
-      if(strcmp(str, "END") break;
+      fscanf(stdin, "%s", str);
+      if(strcmp(str, "END")) break;
       write(fd, str, sizeof(str));
-    }
+    
     usleep((rand() % MaxZs) + 1);           /* pause a bit for realism */
   }
 
