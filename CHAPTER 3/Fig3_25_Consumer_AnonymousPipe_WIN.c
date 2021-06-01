@@ -4,7 +4,7 @@
 
 #define BUFFER_SIZE 25
 int main(VOID) {
-  HANDLE Readhandle;
+  HANDLE ReadHandle;
   CHAR buffer[BUFFER_SIZE];
   DWORD read;
   /* get the read handle of the pipe */
