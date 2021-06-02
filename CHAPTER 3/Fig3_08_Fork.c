@@ -1,3 +1,6 @@
+// 2021 June 2
+// Creator: Tran Trung Tin
+// Demo using system call fork to create a child process which execute command ls by execlp.
 #include <sys/types.h>
 
 #include <stdio.h>
@@ -5,7 +8,7 @@
 #include <unistd.h>
 
 int main() {
-  pid t pid;
+  pid_t pid;
   /* fork a child process */
   pid = fork();
   if (pid < 0) {
