@@ -12,7 +12,6 @@
 #include <unistd.h>
 
 int main() {
-
   pid_t pid, wpid;
   int status;
   /* fork a child process */
@@ -27,19 +26,15 @@ int main() {
     printf("\nInput PIN: ");
     scanf("%d", & n);
     //Do not input anything when execute
-
   } else {
     /* parent process */
     int timer = 5;
     do {
-
       wpid = waitpid(pid, & status, WNOHANG);
       if (wpid == -1) {
         printf("\nUser already input PIN.");
         break;
-
       }
-
       timer--;
       sleep(1);
       if (timer == 0) {
@@ -49,6 +44,5 @@ int main() {
       }
     } while (1);
   }
-
   return 0;
 }
