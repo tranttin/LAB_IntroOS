@@ -1,5 +1,5 @@
 // 2021 June 2
-// Author: Abraham Silberschatz  in book Operating System Concepts 8th Edition p.170
+// Author: Abraham Silberschatz  in book Operating System Concepts 8th Edition p.172
 // Demo using how to speed up sum of sequence integer.
 #include<windows.h>
 
