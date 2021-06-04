@@ -15,7 +15,6 @@ int main() {
 
   pid_t pid, wpid;
   int status;
-  _Bool flag = 0;
   /* fork a child process */
   pid = fork();
   if (pid < 0) {
@@ -27,7 +26,8 @@ int main() {
     int n;
     printf("\nInput PIN: ");
     scanf("%d", & n);
-    flag = 1; //Do not input anything when execute
+    //Do not input anything when execute
+
   } else {
     /* parent process */
     int timer = 5;
@@ -35,20 +35,20 @@ int main() {
 
       wpid = waitpid(pid, & status, WNOHANG);
       if (wpid == -1) {
-        printf("\nChild exit.");
+        printf("\nUser already input PIN.");
         break;
-        //  exit(EXIT_FAILURE);
+
       }
 
       timer--;
       sleep(1);
       if (timer == 0) {
         kill(pid, SIGKILL);
+        printf("\nTime out. No PIN input");
         break;
       }
     } while (1);
   }
-  if (flag == 1) printf("\nUser already input PIN.");
-  else printf("\nTime out. No PIN input");
+
   return 0;
 }
