@@ -1,13 +1,6 @@
-/**
- * Creating a Java thread pool.
- *
- * Figure 4.15
- *
- * @author Gagne, Galvin, Silberschatz
- * Operating System Concepts  - Tenth Edition
- * Copyright John Wiley & Sons - 2018
- */
-
+// 2021 June 2
+// Author: Abraham Silberschatz  in book Operating System Concepts 8th Edition p.180
+// Demo using how to speed up sum of sequence integer.
 import java.util.concurrent.*;
 
 class Task implements Runnable
