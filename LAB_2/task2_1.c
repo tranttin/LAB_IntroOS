@@ -1,4 +1,4 @@
-// para.c
+// 2021 Jun 4
 // Author: Tran Trung Tin
 // Demo passing parameter though system call
 #include <stdio.h>
