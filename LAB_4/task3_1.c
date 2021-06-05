@@ -26,23 +26,25 @@ int main(int argc, char * argv[]) {
     for (int j = 0; j < N; j++)
       a[i][j] = rand() % MAX_INT;
   }
-  /* create the thread */
-  pthread_create( & tid, & attr, writer, argv[1]);
-  /* wait for the thread to exit */
-  pthread_join(tid, NULL);
-}
-/* The thread will execute in this function */
-void * writer(void * param) {
   FILE * fp;
-  if ((fp = fopen(param, "w")) == NULL) {
+  if ((fp = fopen(argv[1], "w")) == NULL) {
     printf("\nCannot open file.");
     return 0;
   }
+  /* create the thread */
+  pthread_create( & tid, & attr, writer, (void * ) fp);
+  /* wait for the thread to exit */
+  pthread_join(tid, NULL);
+  fclose(fp);
+}
+
+/* The thread will execute in this function */
+void * writer(void * fp) {
+
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < N; j++)
       fprintf(fp, "%d ", a[i][j]);
     fprintf(fp, "\r\n");
   }
-  fclose(fp);
   pthread_exit(0);
 }
