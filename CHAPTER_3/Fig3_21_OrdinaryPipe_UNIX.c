@@ -1,6 +1,6 @@
 // 2021 June 2
 // Author: Abraham Silberschatz  in book Operating System Concepts 10th Edition p.170
-// Demo using how to speed up sum of sequence integer.
+// Demo using ordinary pipe
 #include <sys/types.h>
 
 #include <stdio.h>
@@ -9,14 +9,14 @@
 
 #include <unistd.h>
 
-#define BUFFER SIZE 25
-#define READ END 0
-#define WRITE END 1
+#define BUFFER_SIZE 25
+#define READ_END 0
+#define WRITE_END 1
 int main(void) {
-  char write msg[BUFFER SIZE] = "Greetings";
-  char read msg[BUFFER SIZE];
+  char write_msg[BUFFER_SIZE] = "Greetings";
+  char read_msg[BUFFER_SIZE];
   int fd[2];
-  pid t pid;
+  pid_t pid;
   /* create the pipe */
   if (pipe(fd) == -1) {
     fprintf(stderr, "Pipe failed");
@@ -32,20 +32,20 @@ int main(void) {
   if (pid > 0) {
     /* parent process */
     /* close the unused end of the pipe */
-    close(fd[READ END]);
+    close(fd[READ_END]);
     /* write to the pipe */
-    write(fd[WRITE END], write msg, strlen(write msg) + 1);
+    write(fd[WRITE_END], write_msg, strlen(write_msg) + 1);
     /* close the write end of the pipe */
-    close(fd[WRITE END]);
+    close(fd[WRITE_END]);
   } else {
     /* child process */
     /* close the unused end of the pipe */
-    close(fd[WRITE END]);
+    close(fd[WRITE_END]);
     /* read from the pipe */
-    read(fd[READ END], read msg, BUFFER SIZE);
-    printf("read %s", read msg);
+    read(fd[READ_END], read_msg, BUFFER_SIZE);
+    printf("read %s", read_msg);
     /* close the read end of the pipe */
-    close(fd[READ END]);
+    close(fd[READ_END]);
   }
   return 0;
 }
