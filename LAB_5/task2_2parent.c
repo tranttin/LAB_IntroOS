@@ -27,7 +27,7 @@ extern int errno;
 
 int main(int argc, char * argv[]) {
   char s1[PIPE_BUF], s2[PIPE_BUF], buf[PIPE_BUF];
-  int childpid, readfd, writefd;
+  int readfd, writefd;
   if ((mknod(FIFO1, S_IFIFO | PM, 0) < 0) && (errno != EEXIST)) {
     printf("Fail to create FIFO 1. Aborted.\n");
     return -1;
