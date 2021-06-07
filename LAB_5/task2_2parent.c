@@ -1,3 +1,6 @@
+// 2021 June 2
+// Author: Tran Trung Tin
+// Demo using named pipe. Code PARENT
 #include <stdio.h>
 
 #include <stdlib.h>
