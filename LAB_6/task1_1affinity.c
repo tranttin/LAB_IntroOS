@@ -33,14 +33,8 @@ int main(int argc, char * argv[]) {
 
   int n_thread = atoi(argv[1]);
  
-//  https://man7.org/linux/man-pages/man2/gettid.2.html
-	struct sched_param sd;
-        cpu_set_t set;
-	sd.sched_priority=50;   //Set real-time priority 50
-	sched_setscheduler(0,SCHED_RR,&sd);
-	CPU_ZERO(&set);
-	CPU_SET(0,&set);
-	sched_setaffinity(0,sizeof(cpu_set_t),&set);   //Set CPU affinity
+
+
   /* ### start section to be measured ### */
   /* gettimeofday() method */
   gettimeofday( & startwatch, NULL);
@@ -66,8 +60,14 @@ void * runner(void * param) {
   srand((unsigned int) time(NULL));
   float x, y, distance;
   int a = atoi(param);
-
   pid_t tid = syscall(SYS_gettid);
+        cpu_set_t set;
+	CPU_ZERO(&set);
+if((tid % 2) == 0)	CPU_SET(0,&set);
+	else CPU_SET(1,&set);
+	 if (sched_setaffinity(getpid(), sizeof(set), &set) == -1)
+                   errExit("sched_setaffinity");
+
   printf("\nThread %d is running.", tid);
   for (int i = 0; i < a; i++) {
     x = -1 + ((float) rand() / (float)(RAND_MAX)) * 2;
