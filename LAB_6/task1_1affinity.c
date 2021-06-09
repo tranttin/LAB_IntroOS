@@ -1,15 +1,17 @@
 // 2021 June 7
 // Author: Tran Trung Tin
 // Calculating value of PI by Monte Carlo method
+#define _GNU_SOURCE
+
 #include<pthread.h>
 
 #include<stdio.h>
 
 #include<stdlib.h>
-
-/* gettimeofday */ #include <sys/time.h>
-
-/* clock */ #include <time.h>
+/* gettimeofday */
+#include <sys/time.h>
+/* clock */
+#include <time.h>
 
 #include <sys/sysinfo.h>
 
@@ -18,7 +20,11 @@
 #include <sys/syscall.h>
 
 #include <unistd.h>
- // maximum number of threads 
+
+#include <sched.h>
+
+#include <sys/wait.h>
+// maximum number of threads 
 #define MAX_THREAD 40
 int counter = 0; /* this data is shared by the thread(s) */
 void * runner(void * param); /* threads call this function */
@@ -28,12 +34,8 @@ int main(int argc, char * argv[]) {
   /* set the default attributes of the thread */
   pthread_attr_init( & attr);
   /* create the thread */
-
   struct timeval startwatch, endwatch;
-
   int n_thread = atoi(argv[1]);
- 
-
 
   /* ### start section to be measured ### */
   /* gettimeofday() method */
@@ -47,11 +49,8 @@ int main(int argc, char * argv[]) {
 
   gettimeofday( & endwatch, NULL);
   /* ### end of section to be measured ### */
-
   printf("\nGettimeofday() method: %ldus", (endwatch.tv_sec - startwatch.tv_sec) * 1000000 + (endwatch.tv_usec - startwatch.tv_usec));
-
   printf("\nUoc tinh PI =  %f\n", (float) counter / (n_thread * atoi(argv[2])) * 4);
-
   return 0;
 }
 
@@ -61,12 +60,12 @@ void * runner(void * param) {
   float x, y, distance;
   int a = atoi(param);
   pid_t tid = syscall(SYS_gettid);
-        cpu_set_t set;
-	CPU_ZERO(&set);
-if((tid % 2) == 0)	CPU_SET(0,&set);
-	else CPU_SET(1,&set);
-	 if (sched_setaffinity(getpid(), sizeof(set), &set) == -1)
-                   errExit("sched_setaffinity");
+  cpu_set_t set;
+  CPU_ZERO( & set);
+  if ((tid % 2) == 0) CPU_SET(0, & set);
+  else CPU_SET(1, & set);
+  if (sched_setaffinity(tid, sizeof(set), & set) == -1)
+    printf("\nFailed to set affinity.");
 
   printf("\nThread %d is running.", tid);
   for (int i = 0; i < a; i++) {
@@ -75,7 +74,6 @@ if((tid % 2) == 0)	CPU_SET(0,&set);
 
     distance = sqrt(x * x + y * y);
     if (distance <= 1.0) counter++;
-
   }
   printf("\nThread %d finished.", tid);
   pthread_exit(0);
