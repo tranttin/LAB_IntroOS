@@ -7,7 +7,7 @@
 
 #include<unistd.h>
 
-void * runner(void * param) 
+void * runner(void * param) ;
 int value = 5;
 int main() {
   pthread_t tid; /* the thread identifier */
