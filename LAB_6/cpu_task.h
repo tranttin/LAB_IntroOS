@@ -15,3 +15,29 @@ typedef struct task {
 } Task;
 
 #endif
+
+#include<pthread.h>
+
+#include<stdio.h>
+
+#include<stdlib.h>
+
+#include <string.h>
+
+/* gettimeofday */ #include <sys/time.h>
+
+/* clock */ #include <time.h>
+
+#include <sys/sysinfo.h>
+
+#include <math.h>
+
+#include <sys/syscall.h>
+
+#include <unistd.h>
+#define SIZE    100
+
+Task task[SIZE];
+void * FCFS(void * param);
+void run(Task *task, int start, int slice);
+
