@@ -1,13 +1,13 @@
 // 2021 June 7
 // Author: Tran Trung Tin
-// Producer / Consumer share count varible.
+// Producer / Consumer share count varible. Peterson applied to critical section.
 #define _GNU_SOURCE
 
-#include<pthread.h>
+#include <pthread.h>
 
-#include<stdio.h>
+#include <stdio.h>
 
-#include<stdlib.h>
+#include <stdlib.h>
 
 #include <sys/sysinfo.h>
 
@@ -21,6 +21,8 @@
 
 #include<pthread.h>
 
+#include <stdbool.h>
+
 // maximum number of threads 
 #define BUFFER_SIZE 10
 #define MAX_THREAD 2
@@ -29,7 +31,7 @@ int in = 0;
 int out = 0;
 int buffer[BUFFER_SIZE];
 int turn; //Peterson
-boolean flag[2]; //Peterson
+bool flag[2]; //Peterson
 void * producer(void * param); /* threads 0 call this function */
 void * consumer(void * param); /* threads 1 call this function */
 int main(int argc, char * argv[]) {
@@ -79,7 +81,7 @@ void * consumer(void * param) {
     turn = 0;
     while (flag[0] && turn == 0);
     /* critical section */
-    count++;
+    count--;
     /* end of critical section */
     flag[1] = false;
     printf("\nJust received = %d and count = %d.", receive, count);
