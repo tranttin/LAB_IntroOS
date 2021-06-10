@@ -1,6 +1,6 @@
 // 2021 June 7
 // Author: Tran Trung Tin
-// Producer / Consumer
+// Producer / Consumer share count varible.
 #define _GNU_SOURCE
 
 #include<pthread.h>
@@ -46,9 +46,8 @@ int main(int argc, char * argv[]) {
   pthread_create( & tid[0], NULL, producer, (argv[1]));
   pthread_create( & tid[1], NULL, consumer, (argv[1]));
   pthread_join(tid[0], NULL);
-  pthread_join(tid[1], NULL);
-  
-  printf("\nAfter all, count = %d\n", count);
+  sleep(1);
+  pthread_cancel(tid[1]);
   return 0;
 }
 
@@ -58,23 +57,19 @@ void * producer(void * param) {
   for (int i = 0; i < max; i++) {
     while (count == BUFFER_SIZE); //do nothing
     buffer[ in ] = 1;
-    printf("\nJust sent in = %d and count = %d.", in , count);
-    in = ( in +1) % BUFFER_SIZE;
+    printf("\nJust sent in = %d and count = %d.", in , count); in = ( in +1) % BUFFER_SIZE;
     count++;
   }
   pthread_exit(0);
 }
 void * consumer(void * param) {
   int receive = 0;
-  int i = 0, max = atoi(param);
-  for (int i = 0; i < max; i++) {
+  while (1) {
     while (count == 0); //do nothing
     receive += buffer[out];
-    printf("\nJust received out = %d and count = %d.", in , count);
-    out = (out + 1) % BUFFER_SIZE;
     count--;
+    printf("\nJust received = %d and count = %d.", receive, count);
+    out = (out + 1) % BUFFER_SIZE;
   }
-  printf("\nAfter all, receive = %d\n", count);
-
   pthread_exit(0);
 }
