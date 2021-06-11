@@ -2,9 +2,12 @@
 // Author: Abraham Silberschatz  in book Operating System Concepts 10th Edition p.170
 // Demo using how to speed up sum of sequence integer.
 #include <stdio.h>
+
 #include <stdlib.h>
 
 #include <string.h>
+
+#include <unistd.h>
 
 #include <fcntl.h>
 
