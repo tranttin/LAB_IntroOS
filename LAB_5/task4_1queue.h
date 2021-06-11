@@ -1,5 +1,6 @@
-#define ProjectId 123
+#define ProjectId 123  // for System-V
 #define PathName  "queue.h" /* any existing, accessible file would do */
+#define key "/OpenCSF_MQ"
 #define MsgLen    40
 #define MsgCount  6
 
