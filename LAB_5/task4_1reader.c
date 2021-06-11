@@ -25,7 +25,7 @@ int main() {
    */
 
   /* Open the message queue for reading */
-  mqd_t mqd = mq_open("/OpenCSF_MQ", O_RDONLY);
+  mqd_t mqd = mq_open(key, O_RDONLY);
   assert(mqd != -1);
 
   /* Get the message queue attributes */
