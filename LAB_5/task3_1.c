@@ -28,8 +28,6 @@
 int main(int argc, char * argv[]) {
   int * shm, shm_id, k, pid;
   const char * key = "sharedkey";
-  //shmid = shmget(key, SIZE, IPC_CREAT | 0666)
-
   if ((shm_id = shm_open(key, O_CREAT | O_RDWR, 0666)) == -1) {
     perror("Shared memory created.\n");
     return 2;
