@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
   if (pid == 0) { // child
     shm[0] = atoi(argv[1]);
     shm[1] = atoi(argv[2]);
-    sleep(3);
+    sleep(1);
     printf("%d + %d = %d\n", shm[0], shm[1], shm[2]);
     shmdt((void * ) shm);
     shmctl(shmid, IPC_RMID, (struct shmid_ds * ) 0);
@@ -44,7 +44,7 @@ int main(int argc, char * argv[]) {
     sleep(1);
     shm[2] = shm[1] + shm[0];
     shmdt((void * ) shm);
-    sleep(5);
+    sleep(1);
     return 0;
   } else {
     perror("Fork failed.");
