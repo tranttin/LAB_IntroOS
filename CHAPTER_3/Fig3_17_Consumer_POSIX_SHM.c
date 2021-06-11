@@ -28,7 +28,7 @@ int main() {
   fd = shm_open(name, O_RDONLY, 0666);
   /* memory map the shared memory object */
   ptr = (char * )
-  mmap(0, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  mmap(0, SIZE, PROT_READ , MAP_SHARED, fd, 0); // | PROT_WRITE delete due to core dumped (noted by Tran Tin)
   /* read from the shared memory object */
   printf("%s", (char * ) ptr);
   /* remove the shared memory object */
