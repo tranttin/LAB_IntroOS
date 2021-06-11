@@ -1,6 +1,10 @@
 // 2021 June 2
 // Author: Abraham Silberschatz  in book Operating System Concepts 10th Edition p.170
-// Demo using how to speed up sum of sequence integer.#include <stdio.h>
+// Demo using how to speed up sum of sequence integer.
+#include <stdio.h>
+
+#include <unistd.h>
+
 #include <stdlib.h>
 
 #include <fcntl.h>
@@ -21,13 +25,13 @@ int main() {
   /* pointer to shared memory obect */
   char * ptr;
   /* open the shared memory object */
-  fd = shm open(name, O RDONLY, 0666);
+  fd = shm_open(name, O_RDONLY, 0666);
   /* memory map the shared memory object */
   ptr = (char * )
-  mmap(0, SIZE, PROT READ | PROT WRITE, MAP SHARED, fd, 0);
+  mmap(0, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   /* read from the shared memory object */
   printf("%s", (char * ) ptr);
   /* remove the shared memory object */
-  shm unlink(name);
+  shm_unlink(name);
   return 0;
 }
