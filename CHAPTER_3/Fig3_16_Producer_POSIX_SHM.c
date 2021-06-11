@@ -34,8 +34,7 @@ int main() {
   /* configure the size of the shared memory object */
   ftruncate(fd, SIZE);
   /* memory map the shared memory object */
-  ptr = (char * )
-  mmap(0, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  ptr = (char * )   mmap(0, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   /* write to the shared memory object */
   sprintf(ptr, "%s", message_0);
   ptr += strlen(message_0);
