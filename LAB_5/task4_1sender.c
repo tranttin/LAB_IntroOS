@@ -22,7 +22,7 @@
 int main() {
 
   /* Create and open a message queue for writing */
-  mqd_t mqd = mq_open("/OpenCSF_MQ", O_CREAT | O_WRONLY, 0666, NULL);
+  mqd_t mqd = mq_open(key, O_CREAT | O_WRONLY, 0666, NULL);
 
   /* Ensure the creation was successful */
   if (mqd == -1) {
