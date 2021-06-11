@@ -46,6 +46,7 @@ int main(int argc, char * argv[]) {
   } else if (pid > 0) { // parent
     sleep(1);
     shm[2] = shm[1] + shm[0];
+    shm_unlink(key);   
     sleep(1);
     return 0;
   } else {
