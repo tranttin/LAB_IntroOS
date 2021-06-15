@@ -1,6 +1,6 @@
 // 2021 June 2
 // Author: Abraham Silberschatz  in book Operating System Concepts 8th Edition p.320
-// Demo deadlock
+// Demo deadlock, finish by Tran Trung Tin
 #include<pthread.h>
 
 #include <semaphore.h>
