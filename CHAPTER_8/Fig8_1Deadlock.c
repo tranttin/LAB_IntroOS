@@ -9,14 +9,18 @@
 
 #include<stdlib.h>
 
+#include<unistd.h>
+
 pthread_mutex_t first_mutex;
 pthread_mutex_t second_mutex;
-pthread_mutex_init( & first_mutex, NULL);
-pthread_mutex_init( & second_mutex, NULL);
+
 
 void * do_work_one(void * param); /* threads call this function */
 void * do_work_two(void * param); /* threads call this function */
 int main(int argc, char * argv[]) {
+
+pthread_mutex_init( & first_mutex, NULL);
+pthread_mutex_init( & second_mutex, NULL);
   pthread_t tid[2]; /* the thread identifier */
   /* create the thread */
   pthread_create( & tid[0], NULL, do_work_two, NULL);
@@ -24,7 +28,7 @@ int main(int argc, char * argv[]) {
   /* wait for the thread to exit */
   pthread_join(tid[0], NULL);
   pthread_join(tid[1], NULL);
-  printf("sum = %d∖n", sum);
+  return 0;
 }
 
 /* thread_one runs in this function */
