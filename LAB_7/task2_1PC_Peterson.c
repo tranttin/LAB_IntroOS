@@ -19,8 +19,6 @@
 
 #include <sys/wait.h>
 
-#include<pthread.h>
-
 #include <stdbool.h>
 
 // maximum number of threads 
