@@ -32,18 +32,19 @@ int out = 0;
 int buffer[BUFFER_SIZE];
 void * producer(void * param); /* threads 0 call this function */
 void * consumer(void * param); /* threads 1 call this function */
+
+sem_t mutex_sem;
 int main(int argc, char * argv[]) {
   pthread_t tid[MAX_THREAD]; /* the thread identifier */
-sem_t mutex_sem, buffer_count_sem, spool_signal_sem;
-    // initialization
-    buffer_index = buffer_print_index = 0;
 
-    //  mutual exclusion semaphore, mutex_sem with an initial value 1.
-    if (sem_init (&mutex_sem, 0, 1) == -1) {
-        perror ("sem_init"); exit (1);
-    }
-    
-    
+  // initialization
+
+  //  mutual exclusion semaphore, mutex_sem with an initial value 1.
+  if (sem_init( & mutex_sem, 0, 1) == -1) {
+    perror("sem_init");
+    exit(1);
+  }
+
   struct sched_param sd;
   sd.sched_priority = 50; //Set real-time priority 50
   sched_setscheduler(0, SCHED_RR, & sd);
@@ -59,9 +60,10 @@ sem_t mutex_sem, buffer_count_sem, spool_signal_sem;
   pthread_join(tid[0], NULL);
   sleep(1);
   pthread_cancel(tid[1]);
-     if (sem_destroy (&mutex_sem) == -1) {
-        perror ("sem_destroy"); exit (1);
-    }
+  if (sem_destroy( & mutex_sem) == -1) {
+    perror("sem_destroy");
+    exit(1);
+  }
 
   return 0;
 }
@@ -73,13 +75,15 @@ void * producer(void * param) {
     while (count == BUFFER_SIZE); //do nothing
     buffer[ in ] = 1;
     printf("\nJust sent in = %d and count = %d.", in , count); in = ( in +1) % BUFFER_SIZE;
-            if (sem_wait (&mutex_sem) == -1) {
-	    perror ("sem_wait: mutex_sem"); exit (1);
-        }
+    if (sem_wait( & mutex_sem) == -1) {
+      perror("sem_wait: mutex_sem");
+      exit(1);
+    }
     count++;
-           if (sem_post (&mutex_sem) == -1) {
-	    perror ("sem_post: mutex_sem"); exit (1);
-        }
+    if (sem_post( & mutex_sem) == -1) {
+      perror("sem_post: mutex_sem");
+      exit(1);
+    }
   }
   pthread_exit(0);
 }
@@ -88,13 +92,15 @@ void * consumer(void * param) {
   while (1) {
     while (count == 0); //do nothing
     receive += buffer[out];
-            if (sem_wait (&mutex_sem) == -1) {
-	    perror ("sem_wait: mutex_sem"); exit (1);
-        }
+    if (sem_wait( & mutex_sem) == -1) {
+      perror("sem_wait: mutex_sem");
+      exit(1);
+    }
     count--;
-           if (sem_post (&mutex_sem) == -1) {
-	    perror ("sem_post: mutex_sem"); exit (1);
-        }
+    if (sem_post( & mutex_sem) == -1) {
+      perror("sem_post: mutex_sem");
+      exit(1);
+    }
     printf("\nJust received = %d and count = %d.", receive, count);
     out = (out + 1) % BUFFER_SIZE;
   }
