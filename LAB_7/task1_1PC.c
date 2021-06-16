@@ -19,8 +19,6 @@
 
 #include <sys/wait.h>
 
-#include<pthread.h>
-
 // maximum number of threads 
 #define BUFFER_SIZE 10
 #define MAX_THREAD 2
