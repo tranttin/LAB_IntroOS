@@ -1,36 +1,35 @@
+// 2021 June 2
+// Author: Abraham Silberschatz  in book Operating System Concepts 8th Edition p.170
+// Demo using how to speed up sum of sequence integer.
+#include<pthread.h>
 
-#include <pthread.h>
-#include <stdio.h>
+#include<stdio.h>
 
-pthread_barrier_t barrier;
+#include<stdlib.h>
 
-void* thread_func(void* aArgs)
-{
-  pthread_barrier_wait(&barrier);
+int sum; /* this data is shared by the thread(s) */
+void * runner(void * param); /* threads call this function */
+void * CGV(void * param); /* threads call this function */
 
-  printf("Entering thread %p\n", (void*)pthread_self());
-  int i;
-  for(i = 0 ; i < 5; i++)
-    printf("val is %d in thread %p \n", i, (void*)pthread_self());
+int main(int argc, char * argv[]) {
+  pthread_t tid[4]; /* the thread identifier */
+  pthread_attr_t attr; /* set of thread attributes */
+  /* set the default attributes of the thread */
+  pthread_attr_init( & attr);
+  /* create the thread */
+    pthread_create( & tid[0], & attr, runner, NULL);
+    pthread_create( & tid[1], & attr, runner, NULL);
+    pthread_create( & tid[2], & attr, runner, NULL);
+    pthread_create( & tid[3], & attr, CGV, NULL);
+  /* wait for the thread to exit */
+  pthread_join(tid, NULL);
+  printf("sum = %d∖n", sum);
 }
-
-int main()
-{
-  pthread_t thread_1, thread_2;
-  pthread_barrier_init(&barrier, NULL, 2);
-
-  pthread_create(&thread_1, NULL, (void*)thread_func, NULL);
-  printf("Thread %p created\n", (void*)thread_1);
-
-  usleep(500);
-
-  pthread_create(&thread_2, NULL, (void*)thread_func, NULL);
-  printf("Thread %p created\n", (void*)thread_2);
-
-  pthread_join(thread_1, NULL);
-  pthread_join(thread_2, NULL);
-
-  pthread_barrier_destroy(&barrier);
-
-  return 0;
+/* The thread will execute in this function */
+void * runner(void * param) {
+  int i, upper = atoi(param);
+  sum = 0;
+  for (i = 1; i <= upper; i++)
+    sum += i;
+  pthread_exit(0);
 }
