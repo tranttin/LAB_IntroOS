@@ -5,7 +5,9 @@
 
 #include <stdlib.h>
 
-#ifndef __STDC_NO_ATOMICS__#include <stdatomic.h>
+#ifndef __STDC_NO_ATOMICS__
+
+#include <stdatomic.h>
 
 #endif
 
@@ -15,6 +17,5 @@ int main(int argc, char ** argv) {
   atomic_store( & a, 5);
   int b = atomic_load( & a);
   printf("b = %i\n", b);
-
   return EXIT_SUCCESS;
 }
