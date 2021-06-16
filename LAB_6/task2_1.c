@@ -1,8 +1,8 @@
 // 2021 June 7
 // Author: Tran Trung Tin
 // Calculating value of PI by Monte Carlo method
-#define _GNU_SOURCE#include<pthread.h>
-
+#define _GNU_SOURCE
+#include<pthread.h>
 #include<stdio.h>
 
 #include<stdlib.h>
