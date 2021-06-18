@@ -2,7 +2,7 @@
 // Author: Tran Trung Tin
 // Calculating value of PI by Monte Carlo method
 
-#include "cputask.h"
+#include "task.h"
  // maximum number of threads 
 #define MAX_THREAD 5
 
