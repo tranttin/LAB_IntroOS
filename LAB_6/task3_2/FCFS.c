@@ -2,7 +2,7 @@
  * schedule_fcfs.c
 **/
 
-#include "cputask.h"
+#include "task.h"
 extern int i;
 
 
