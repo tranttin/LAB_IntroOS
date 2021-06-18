@@ -1,6 +1,6 @@
-/**
- * Representation of a task in the system.
- */
+// 2021 June 7
+// Author: Tran Trung Tin
+// Reading define Task structure and all lib.
 
 #ifndef TASK_H
 #define TASK_H
