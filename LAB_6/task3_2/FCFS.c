@@ -1,21 +1,22 @@
-/**
- * schedule_fcfs.c
-**/
+// 2021 Jun 15
+// Author: Tran Trung Tin, based on [1] Chapter 5 Programming Assignment.
+// FCFS running an array already read from file by driver.c
 
 #include "task.h"
-extern int i;
-
+extern int process;
 
 void * FCFS(void * param){
-
+    int t_wait = 0, t_taround = 0;
     int j=0;
     int time=0;
-    for(j=0 ; j < i ; j++) {
-        run(&task[j],time,task[j].burst);
-        time += task[j].burst;
+//SORTING ARRIVAL TIME
+    for(j=0 ; j < process ; j++) {
+        run(&task[j],time,task[j].burst); //Run from time to time+burst
+        time += task[j].burst; //moving to next P
+        t_wait += time - task[j].burst - task[j].arrival ;
+        t_taround += time - task[j].arrival ;
     }
-    /*C1: tạo mảng lưu trữ thời gian chờ của từng P, mảng khác lưu trữ thời gian quay vòng
-     rồi tính trung bình cộng và in ra màn hình.
-    C2: tính gộp trong vòng lặp. Vì arrival của mọi P là 0 nên thời gian chờ của mỗi P là tổng thời gian chạy của các P trước nó.
-    */
+  printf("\nFCFS Time wait ave = %.2f", t_wait * 1.0 / process);
+  printf("\nFCFS Time turn around ave = %.2f", t_taround * 1.0 / process);
+  pthread_exit(0);
 }
