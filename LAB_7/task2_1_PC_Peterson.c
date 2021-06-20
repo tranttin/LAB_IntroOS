@@ -59,7 +59,8 @@ void * producer(void * param) {
   for (int i = 0; i < max; i++) {
     while (count == BUFFER_SIZE); //do nothing
     buffer[ in ] = 1;
-    printf("\nJust sent in = %d and count = %d.", in , count); in = ( in +1) % BUFFER_SIZE;
+    printf("\nJust sent in = %d and count = %d.", in , count); 
+    in = (in +1) % BUFFER_SIZE;
     flag[0] = true;
     turn = 1;
     while (flag[1] && turn == 1);
