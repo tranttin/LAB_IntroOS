@@ -1,6 +1,6 @@
-
-
-
+// 2021 June 7
+// Author: Tran Trung Tin
+// Producer / Consumer share count varible. Peterson applied to critical section.
 #include <stdio.h>
 
 #include <stdlib.h>
