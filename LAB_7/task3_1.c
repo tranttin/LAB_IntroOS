@@ -1,6 +1,6 @@
-
-
-
+// 2021 June 7
+// Author: Tran Trung Tin
+// Atomic varible
 #include<stdio.h>
 
 #include<string.h>
@@ -21,8 +21,6 @@ void * trythis(void * arg) {
   for (n = 0; n < 100; ++n) {
     ++cnt;
     ++acnt;
-    // for this example, relaxed memory order is sufficient, e.g.
-    // atomic_fetch_add_explicit(&acnt, 1, memory_order_relaxed);
   }
   return 0;
 }
