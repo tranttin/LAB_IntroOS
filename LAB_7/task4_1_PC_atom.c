@@ -2,8 +2,8 @@
 // Author: Tran Trung Tin
 // Producer / Consumer share count varible.
 #define _GNU_SOURCE
-
 #ifndef __STDC_NO_ATOMICS__
+#endif
 
 #include <stdatomic.h>
 
