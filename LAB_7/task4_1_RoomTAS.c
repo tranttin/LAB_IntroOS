@@ -32,23 +32,23 @@ int main(int argc, char * argv[]) {
 }
 /* The thread will execute in this function */
 void * urgent(void * param) {
-if (__atomic_test_and_set (&flag, __ATOMIC_RELAXED) == 0) {
-	  printf("\nA: Urgent in %d sec ...", atoi(param));
-	  sleep(atoi(param)); //try after interval 1 sec
-  }	
-	printf("\nA: I'm done.");
-	__atomic_clear (&flag, __ATOMIC_RELEASE);
+  if (__atomic_test_and_set( & flag, __ATOMIC_ACQUIRE) == 0) {
+    printf("\nA: Urgent in %d sec ...", atoi(param));
+    sleep(atoi(param)); //try after interval 1 sec
+  }
+  printf("\nA: I'm done.");
+  __atomic_clear( & flag, __ATOMIC_RELEASE);
   pthread_exit(0);
 }
 
 /* The thread will execute in this function */
 void * interrupt(void * param) {
   sleep(1); // come late.
-  while (__atomic_test_and_set (&flag, __ATOMIC_RELEASE) == 1) {
-	  printf("\nB: I'm waiting ...");
-	  sleep(1); //try after interval 1 sec
-  }	  
+  while (__atomic_test_and_set( & flag, __ATOMIC_ACQUIRE) == 1) {
+    printf("\nB: I'm waiting ...");
+    sleep(1); //try after interval 1 sec
+  }
   printf("\nB: I'm in ....\n");
-		__atomic_clear (&flag, __ATOMIC_RELEASE);
+  __atomic_clear( & flag, __ATOMIC_RELEASE);
   pthread_exit(0);
 }
