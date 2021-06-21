@@ -36,9 +36,6 @@ void * consumer(void * param); /* threads 1 call this function */
 sem_t mutex_sem;
 int main(int argc, char * argv[]) {
   pthread_t tid[MAX_THREAD]; /* the thread identifier */
-
-  // initialization
-
   //  mutual exclusion semaphore, mutex_sem with an initial value 1.
   if (sem_init( & mutex_sem, 0, 1) == -1) {
     perror("sem_init");
@@ -64,7 +61,6 @@ int main(int argc, char * argv[]) {
     perror("sem_destroy");
     exit(1);
   }
-
   return 0;
 }
 
