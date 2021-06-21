@@ -27,7 +27,7 @@ int main() {
   /* pointer to shared memory obect */
   char * ptr;
   /* create the shared memory object */
-  fd = shm open(name, O CREAT | O RDWR, 0666);
+  fd = shm_open(name, O CREAT | O RDWR, 0666);
   /* configure the size of the shared memory object */
   ftruncate(fd, SIZE);
   /* memory map the shared memory object */
