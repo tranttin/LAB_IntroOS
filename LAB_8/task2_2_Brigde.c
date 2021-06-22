@@ -13,8 +13,9 @@
 
 #define MAX_FARMER 10
 pthread_t tid[MAX_FARMER];
+
 void * farmer(void * param) {
-  int v = (int * ) param;
+  int v = * (int * ) param;  free(param);
   printf("\n%d Arriving bridge ...", v);
   printf("\n%d Enter bridge ...", v);
   sleep(rand() % 5 + 3); //random time cost 2 --> 6 s
@@ -24,9 +25,11 @@ void * farmer(void * param) {
 
 int main(void) {
   time_t t;
+  /* Intializes random number generator */
   srand((unsigned) time( & t));
   for (int i = 0; i < MAX_FARMER; i++) {
-    pthread_create( & tid[i], NULL, farmer, (void * ) i);
+    int * p = malloc(sizeof i);* p = i;
+    pthread_create( & tid[i], NULL, farmer, p);
     sleep(rand() % 3); //random time cost 0-4 s
   }
   for (int i = 0; i < MAX_FARMER; i++)
