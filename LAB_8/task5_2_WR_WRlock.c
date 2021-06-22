@@ -1,6 +1,6 @@
 // 2021 Apr 21
 // Author: Tran Trung Tin based on Book Operating System Concepts 10th, p.270
-// Writer-Reader (Variation 1) by sem_t
+// Writer-Reader (Variation 1) by WR-lock
 # include < stdio.h >
   
 # include < stdlib.h >
