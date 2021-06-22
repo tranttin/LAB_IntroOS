@@ -74,8 +74,6 @@ int main() {
   /* to be used within this process only */
   pthread_rwlock_init( & lock, NULL);
 
-  readCount = 0;
-
   int id = 0;
   while (scanf("%d", & id) != EOF) {
 
