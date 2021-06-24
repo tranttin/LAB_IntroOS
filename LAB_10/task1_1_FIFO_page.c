@@ -1,3 +1,5 @@
+https://www.programming9.com/programs/c-programs/285-page-replacement-programs-in-c
+
 #include<stdio.h>
 int n,nf;
 int in[100];
