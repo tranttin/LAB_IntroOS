@@ -17,13 +17,14 @@ gcc -o diskAlgorithms diskAlgorithms.c
 #include <stdlib.h>
 
 #define CYLINDERS 5000
-#define REQUESTS 1000
+#define MAX 1000
 
 int start = 0;
 
-int ran_array[REQUESTS];
-int test_array[REQUESTS];
-
+  int REQUESTS;
+int ran_array[MAX];
+int test_array[MAX];
+int head_start;
 int* sort_array() {
 
 	int temp = 0, i = 0, j = 0;
@@ -51,17 +52,15 @@ order recieved. If at end of array, start from index zero and continually
 add until starting index */
 int fcfs(int *ran_array) {
 
-	int i = 0, head_movement = 0, this_start = ran_array[start];
+	int i = 0, head_movement = 0;
 
-    for(i = start; i < REQUESTS; i++) {
+    for(i = 0; i < REQUESTS; i++) {
 
-    	head_movement += abs(ran_array[i] - this_start);
+    	head_movement += abs(ran_array[i] - head_start);
+	head_start = ran_array[i];
+	printf("%5d", ran_array[i]);
     }
 
-    for(i = 0; i < start; i++) {
-
-    	head_movement += abs(this_start - ran_array[i]);
-    }
         
     return head_movement;
 }
@@ -127,7 +126,7 @@ int scan(int * ranArray) {
 	head_movement += sav_val;
 	sav_val = 0;
 
-	for(i = start+1; i < REQUESTS; i++) {
+	for(i = 0; i < REQUESTS; i++) {
 
 		curr_val = ran_array[i];
 		difference = abs(curr_val - sav_val);
@@ -233,29 +232,45 @@ int clook(int* ranArray) {
 
 int main (int argc, char *argv[]) {
 
+  REQUESTS = atoi(argv[1]);
+  if (REQUESTS > 0) {
 
-	int i = 0;
-	start = atoi(argv[1]);
+ 
+    // Use current time as seed for random generator
+    srand(time(0));
+     for (int i = 0; i < REQUESTS; i++) ran_array[i] = rand() % CYLINDERS;
 
-	if(argc != 2) {
+  } else {
+    FILE * fp;
+    REQUESTS = 0;
 
-		printf("Please compile program with starting index from 0-4999. Ex. ./diskAlgorithms 423\n");
-		exit(-1);
-	}
+    if ((fp = fopen("data.txt", "r")) == NULL) {
+      printf("\nCannot open file.\n");
+      return 0;
+    }
+    while (!feof(fp)) {
+      fscanf(fp, "%d", &ran_array[REQUESTS]);
+      REQUESTS++;
+    }
 
-	for(i = 0; i < REQUESTS; i++) {
+    fclose(fp);
+REQUESTS--;
 
-		ran_array[i] = rand() % 5000;
-	}
+  }
 
-	printf("\nStart index: %d, start value: %d\n\n", start, ran_array[start]);
 
-	printf("FCFS head movements: %d\n", fcfs(ran_array));
-	printf("SSTF head movements: %d\n", sstf(ran_array));
-	printf("SCAN head movements: %d\n", scan(ran_array));
-	printf("CSCAN head movements: %d\n", cscan(ran_array));
-	printf("LOOK head movements: %d\n", look(ran_array));
-	printf("C-LOOK head movements: %d\n\n", clook(ran_array));
+
+	head_start = atoi(argv[2]);
+
+
+
+
+	printf("\nFCFS head movements: %d", fcfs(ran_array));
+	printf("\nSSTF head movements: %d", sstf(ran_array));
+	printf("\nSCAN head movements: %d", scan(ran_array));
+	printf("\nCSCAN head movements: %d", cscan(ran_array));
+	printf("\nLOOK head movements: %d", look(ran_array));
+	printf("\nC-LOOK head movements: %d\n", clook(ran_array));
 
 	return 0;
 }
