@@ -1,330 +1,172 @@
-https://www.programming9.com/programs/c-programs/285-page-replacement-programs-in-c
+#include <pthread.h>
 
-#include<stdio.h>
-int n,nf;
-int in[100];
-int p[50];
-int hit=0;
-int i,j,k;
-int pgfaultcnt=0;
- 
-void getData()
-{
-    printf("\nEnter length of page reference sequence:");
-    scanf("%d",&n);
-    printf("\nEnter the page reference sequence:");
-    for(i=0; i<n; i++)
-        scanf("%d",&in[i]);
-    printf("\nEnter no of frames:");
-    scanf("%d",&nf);
+#include <stdio.h>
+
+#include <stdbool.h>
+
+#include <stdlib.h>
+
+#include <string.h>
+
+#include <unistd.h>
+
+#include<time.h>
+
+#define PAGE_TABLE_SIZE 256
+#define OFFSET 256
+#define TLB_SIZE 16
+int FRAME_SIZE = 100;
+char MEM[PAGE_TABLE_SIZE * OFFSET];
+
+struct PageEntry {
+  bool bVaild;
+  int iFrame; ////Page p in frame f  is presented by iPage[p] = f
+  bool bDirty;
+};
+
+struct TLBEntry {
+  int iPage;
+  int iFrame;
+  bool bVaild;
+};
+
+struct PageEntry PageTable[PAGE_TABLE_SIZE];
+struct TLBEntry TLB[TLB_SIZE];
+
+int CLOCK_TLB = 0;
+int CLOCK_PTB = 0;
+int iPageFault = 0;
+
+//Declaration function
+void fFIFO(int iPage);
+void fSwapIn(int iPage, int iMemPosition);
+void fSwwapOut(int iPage);
+
+int fTLBLook(int param) {
+  for (int i = 0; i < TLB_SIZE; i++)
+    if (TLB[i].iPage == param && TLB[i].bVaild == true)
+      return TLB[i].iFrame;
+
+  return -1;
 }
- 
-void initialize()
-{
-    pgfaultcnt=0;
-    for(i=0; i<nf; i++)
-        p[i]=9999;
+
+int fPageTable(int param) {
+  usleep(500);
+  if (PageTable[param].bVaild == false) return -1;
+  return PageTable[param].iFrame;
+
 }
- 
-int isHit(int data)
-{
-    hit=0;
-    for(j=0; j<nf; j++)
-    {
-        if(p[j]==data)
-        {
-            hit=1;
-            break;
-        }
- 
+
+void initalizer(void) {
+  for (int i = 0; i < PAGE_TABLE_SIZE; i++) {
+    PageTable[i].bVaild = false;
+    PageTable[i].bDirty = false;
+  }
+  for (int i = 0; i < TLB_SIZE; i++) TLB[i].bVaild = false;
+}
+
+void fTranslate(int iVirtualAdd) {
+  printf("\n@ %5d", iVirtualAdd);
+  int iPage = iVirtualAdd / OFFSET;
+  int iOffset = iVirtualAdd % OFFSET;
+
+  int iFrame1 = fTLBLook(iPage);
+  int iFrame2 = fPageTable(iPage);
+  if (iFrame1 != -1) {
+    printf(" TLB hit  ");
+    int PhysicAdd = iFrame1 * OFFSET + iOffset;
+    printf(" Memory 0x%05d, Content = %c ", PhysicAdd, MEM[PhysicAdd]);
+    return;
+  } else {
+    printf(" TLB_miss ");
+    if (iFrame2 != -1) { //Page in memory
+      int PhysicAdd = iFrame2 * OFFSET + iOffset;
+      printf(" Memory 0x%05d, Content = %c ", PhysicAdd, MEM[PhysicAdd]);
+      return;
+    } else {
+      //Page Fault
+      printf(" Page_fault ");
+      iPageFault++;
+      fFIFO(iPage);
+
+      //Restart
+      fTranslate(iVirtualAdd);
     }
- 
-    return hit;
+  }
+
 }
- 
-int getHitIndex(int data)
-{
-    int hitind;
-    for(k=0; k<nf; k++)
-    {
-        if(p[k]==data)
-        {
-            hitind=k;
-            break;
-        }
+void fSwapIn(int iPage, int iMemPosition) {
+  FILE * fp;
+  char str[OFFSET];
+  if ((fp = fopen("BACKINGSTORE.bin", "r")) == NULL) {
+    printf("\nCannot open file.\n");
+    return;
+  }
+  fseek(fp, iPage * OFFSET, SEEK_SET);
+  fgets(str, OFFSET, fp);
+  for (int i = 0; i < OFFSET; i++) MEM[iMemPosition + i] = str[i];
+  fclose(fp);
+
+}
+void fSwapOut(int param) {}
+void fFIFO(int iPage) {
+  printf(" Victim=%d ", CLOCK_PTB);
+
+  for (int i = 0; i < PAGE_TABLE_SIZE; i++)
+    if (PageTable[i].iFrame == CLOCK_PTB) PageTable[i].bVaild = false; //Clear Victim from Page Table
+  for (int i = 0; i < TLB_SIZE; i++)
+    if (TLB[i].iFrame == CLOCK_PTB) TLB[i].bVaild = false; //Clear Victim from TLB
+
+  if (PageTable[iPage].bDirty == true) fSwapOut(iPage); //Swap out if the victim page has been modified
+
+  PageTable[iPage].iFrame = CLOCK_PTB; //CLOCK_PTB is the frame
+  PageTable[iPage].bVaild = true;
+  PageTable[iPage].bDirty = false;
+
+  fSwapIn(iPage, CLOCK_PTB * OFFSET);
+
+  TLB[CLOCK_TLB].bVaild = true;
+  TLB[CLOCK_TLB].iFrame = CLOCK_PTB;
+  TLB[CLOCK_TLB].iPage = iPage;
+
+  CLOCK_PTB = (CLOCK_PTB + 1) % FRAME_SIZE;
+  CLOCK_TLB = (CLOCK_TLB + 1) % TLB_SIZE;
+
+}
+void fLRU(int iPage) {}
+void fSecondChane(int iPage) {}
+
+int main(int argc, char * argv[]) {
+  FRAME_SIZE = atoi(argv[2]);
+  int SEQ = atoi(argv[1]);
+  if (SEQ > 0) {
+
+    int LogicMem[SEQ];
+    // Use current time as seed for random generator
+    srand(time(0));
+    initalizer();
+    for (int i = 0; i < SEQ; i++) LogicMem[i] = rand() % 65536;
+
+    for (int i = 0; i < SEQ; i++) fTranslate(LogicMem[i]);
+    printf("\nOverall PageFault Rate = %f\n", iPageFault * 1.0 / SEQ);
+  } else {
+    FILE * fp;
+    int SEQ = 0;
+    int LogicMem[1000];
+    if ((fp = fopen("data.txt", "r")) == NULL) {
+      printf("\nCannot open file.\n");
+      return 0;
     }
-    return hitind;
-}
- 
-void dispPages()
-{
-    for (k=0; k<nf; k++)
-    {
-        if(p[k]!=9999)
-            printf(" %d",p[k]);
+    while (!feof(fp)) {
+      fscanf(fp, "%d", & LogicMem[SEQ]);
+      SEQ++;
     }
- 
-}
- 
-void dispPgFaultCnt()
-{
-    printf("\nTotal no of page faults:%d",pgfaultcnt);
-}
- 
-void fifo()
-{
-    initialize();
-    for(i=0; i<n; i++)
-    {
-        printf("\nFor %d :",in[i]);
- 
-        if(isHit(in[i])==0)
-        {
- 
-            for(k=0; k<nf-1; k++)
-                p[k]=p[k+1];
- 
-            p[k]=in[i];
-            pgfaultcnt++;
-            dispPages();
-        }
-        else
-            printf("No page fault");
-    }
-    dispPgFaultCnt();
-}
- 
- 
-void optimal()
-{
-    initialize();
-    int near[50];
-    for(i=0; i<n; i++)
-    {
- 
-        printf("\nFor %d :",in[i]);
- 
-        if(isHit(in[i])==0)
-        {
- 
-            for(j=0; j<nf; j++)
-            {
-                int pg=p[j];
-                int found=0;
-                for(k=i; k<n; k++)
-                {
-                    if(pg==in[k])
-                    {
-                        near[j]=k;
-                        found=1;
-                        break;
-                    }
-                    else
-                        found=0;
-                }
-                if(!found)
-                    near[j]=9999;
-            }
-            int max=-9999;
-            int repindex;
-            for(j=0; j<nf; j++)
-            {
-                if(near[j]>max)
-                {
-                    max=near[j];
-                    repindex=j;
-                }
-            }
-            p[repindex]=in[i];
-            pgfaultcnt++;
- 
-            dispPages();
-        }
-        else
-            printf("No page fault");
-    }
-    dispPgFaultCnt();
-}
- 
-void lru()
-{
-    initialize();
- 
-    int least[50];
-    for(i=0; i<n; i++)
-    {
- 
-        printf("\nFor %d :",in[i]);
- 
-        if(isHit(in[i])==0)
-        {
- 
-            for(j=0; j<nf; j++)
-            {
-                int pg=p[j];
-                int found=0;
-                for(k=i-1; k>=0; k--)
-                {
-                    if(pg==in[k])
-                    {
-                        least[j]=k;
-                        found=1;
-                        break;
-                    }
-                    else
-                        found=0;
-                }
-                if(!found)
-                    least[j]=-9999;
-            }
-            int min=9999;
-            int repindex;
-            for(j=0; j<nf; j++)
-            {
-                if(least[j]<min)
-                {
-                    min=least[j];
-                    repindex=j;
-                }
-            }
-            p[repindex]=in[i];
-            pgfaultcnt++;
- 
-            dispPages();
-        }
-        else
-            printf("No page fault!");
-    }
-    dispPgFaultCnt();
-}
- 
-void lfu()
-{
-    int usedcnt[100];
-    int least,repin,sofarcnt=0,bn;
-    initialize();
-    for(i=0; i<nf; i++)
-        usedcnt[i]=0;
- 
-    for(i=0; i<n; i++)
-    {
- 
-        printf("\n For %d :",in[i]);
-        if(isHit(in[i]))
-        {
-            int hitind=getHitIndex(in[i]);
-            usedcnt[hitind]++;
-            printf("No page fault!");
-        }
-        else
-        {
-            pgfaultcnt++;
-            if(bn<nf)
-            {
-                p[bn]=in[i];
-                usedcnt[bn]=usedcnt[bn]+1;
-                bn++;
-            }
-            else
-            {
-                least=9999;
-                for(k=0; k<nf; k++)
-                    if(usedcnt[k]<least)
-                    {
-                        least=usedcnt[k];
-                        repin=k;
-                    }
-                p[repin]=in[i];
-                sofarcnt=0;
-                for(k=0; k<=i; k++)
-                    if(in[i]==in[k])
-                        sofarcnt=sofarcnt+1;
-                usedcnt[repin]=sofarcnt;
-            }
- 
-            dispPages();
-        }
- 
-    }
-    dispPgFaultCnt();
-}
- 
-void secondchance()
-{
-    int usedbit[50];
-    int victimptr=0;
-    initialize();
-    for(i=0; i<nf; i++)
-        usedbit[i]=0;
-    for(i=0; i<n; i++)
-    {
-        printf("\nFor %d:",in[i]);
-        if(isHit(in[i]))
-        {
-            printf("No page fault!");
-            int hitindex=getHitIndex(in[i]);
-            if(usedbit[hitindex]==0)
-                usedbit[hitindex]=1;
-        }
-        else
-        {
-            pgfaultcnt++;
-            if(usedbit[victimptr]==1)
-            {
-                do
-                {
-                    usedbit[victimptr]=0;
-                    victimptr++;
-                    if(victimptr==nf)
-                        victimptr=0;
-                }
-                while(usedbit[victimptr]!=0);
-            }
-            if(usedbit[victimptr]==0)
-            {
-                p[victimptr]=in[i];
-                usedbit[victimptr]=1;
-                victimptr++;
-            }
-            dispPages();
- 
-        }
-        if(victimptr==nf)
-            victimptr=0;
-    }
-    dispPgFaultCnt();
-}
- 
-int main()
-{
-    int choice;
-    while(1)
-    {
-        printf("\nPage Replacement Algorithms\n1.Enter data\n2.FIFO\n3.Optimal\n4.LRU\n5.LFU\n6.Second Chance\n7.Exit\nEnter your choice:");
-        scanf("%d",&choice);
-        switch(choice)
-        {
-        case 1:
-            getData();
-            break;
-        case 2:
-            fifo();
-            break;
-        case 3:
-            optimal();
-            break;
-        case 4:
-            lru();
-            break;
-        case 5:
-            lfu();
-            break;
-        case 6:
-            secondchance();
-            break;
-        default:
-            return 0;
-            break;
-        }
-    }
+
+    fclose(fp);
+    for (int i = 0; i < SEQ - 1; i++) fTranslate(LogicMem[i]);
+    printf("\n\nOverall Page Fault Rate = %f\n", iPageFault * 1.0 / SEQ);
+
+  }
+
+  return 0;
 }
