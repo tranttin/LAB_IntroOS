@@ -1,130 +1,123 @@
 #include <pthread.h>
+
 #include <stdio.h>
+
 #include <stdbool.h>
+
 #include <stdlib.h>
-bool mem[1000000000]; //maximum of int
-struct process {
-	int iPid;
-	int iBase;
-	int iSize;
+
+#include <string.h>
+
+struct hole {
+  int iPID; //-1 unused
+  int iBase;
+  int iSize;
+  char sName[20];
 };
-struct process P[100];
-int iProcessCount = 0;
-int iProcessID = 0;
-int MAX;
-pthread_t tid[4];
+struct hole M[100];
+int iHoleCount = 0;
+int iPIDcount = 1000;
+pthread_t tid[5];
 
+void * fAllocation(void * param) {
+  int iSizeNew;
+  printf("\nSize of process: ");
+  scanf("%d", & iSizeNew);
 
-void function1() {
-	int iSize;
-	printf("\nSize of process: ");
-	scanf("%d", &iSize);
-        
-	for(int i = 0; i < MAX - iSize; i++) {
-		if(mem[i] == false) {
-			bool bFlag = false;
-			for(int j = i; j < i + iSize - 1; j++) {
-				if(mem[j] == true) {
-				      bFlag = true; i+= j; break;
-				}  
-			}
+  for (int i = 0; i < iHoleCount; i++) {
+    if (M[i].iPID == -1) {
+      if (M[i].iSize == iSizeNew) {
+        // allocate to replace this hole, no new hole left.
+        M[i].iPID = iPIDcount++;
+        //M[i].iBase no change
+        //M[i].iSize no change
 
-			if (bFlag == false) {
-				for(int j = i; j < i + iSize; j++) 
-					mem[j] = true;
-				
-				
-			P[iProcessCount].iPid = ++iProcessID;
-			P[iProcessCount].iBase = i;
-			P[iProcessCount].iSize = iSize;
-printf("New process allocated Pid = %d from %d to %d\n", P[iProcessCount].iPid, P[iProcessCount].iBase, P[iProcessCount].iBase + P[iProcessCount].iSize-1); 	
-			iProcessCount++;
-return;
+        printf("\nNew process allocated PID = %d from %d to %d\n", M[i].iPID, M[i].iBase, M[i].iBase + M[i].iSize - 1);
+        return 0;
+      } else if (M[i].iSize > iSizeNew) { // allocate to this hole, but left a new smaller hole 
+        iHoleCount++;
+        for (int j = iHoleCount; j > i + 1; j--) M[j] = M[j - 1]; //shift right all hole to make new hole.
 
-			}
-		}  
-	}
-	
+        M[i + 1].iPID = -1;
+        M[i + 1].iSize = M[i].iSize - iSizeNew;
+        M[i + 1].iBase = M[i].iBase + iSizeNew;
+        M[i].iPID = iPIDcount++;
 
-
-printf("Khong cap phat duoc");
-
-}
-
-void function2(){
-	function4();
-	int iTerminated;
-	printf("\nWhich Pid terminate? ");
-	scanf("%d",&iTerminated);
- 	for(int i = 0; i < iProcessCount; i++) {
-		if(iTerminated == P[i].iPid)
-			{ 
-			printf("\nProcess %d has been removed. Memory from %d to %d is free.", P[i].iPid, P[i].iBase , P[i].iBase + P[i].iSize - 1);
-			for(int j=i ; j< iProcessCount ; j++)
-				P[i] = P[i+1];
-			iProcessCount--;
-			for(int k=P[i].iBase ; k<P[i].iBase + P[i].iSize; k++) mem[k] = false; return;
-		}
-	}
-
-	printf("Process %d cannot be found.", iTerminated);
-
-
-
-
-}       
-       
-void function4(){
-
-	printf("\nList of %drunning process: \n", iProcessCount);
-	
-	for(int i = 0; i < iProcessCount; i++) {
-		printf("Process %d allocated from %d to %d\n", P[i].iPid, P[i].iBase, P[i].iBase + P[i].iSize - 1);
-	}
-
-}
-
-/*void function3()
-void function4()
-               
-      for i = 0 --> MAX
-         if (mem[i] = false) thì dò tiếp mem i++ cho đến khi gặp mem[j] là true. Print "Memory free from i to j-1" rồi tiếp tục dò. */
-
-
-int main(int argc, char* argv[]) {
-	int iOption; //Chon lua trong menu	
-	MAX = atoi(argv[1]);  // truyền kích thước vào khi gọi chạy 
-       
-	for(int i = 0; i < MAX - 1; i++) {
-		mem[i] = false;
-	}
-
-	for(int i = 100; i < 200; i++) {
-		mem[i] = true;
-	}
-	while(true) {     
-		printf("Chon option:   1-Cap phat   2-Thu hoi   3-Gom cum   4-Thong ke  5-Thoat  \n");
-		scanf("%d", &iOption);
-      		switch (iOption) {
-      		case 1: 
-			
-      			pthread_create(&tid[1],NULL,function1, NULL);
-			pthread_join(tid[1],NULL);
-			break;
-      		case 2:  pthread_create(&tid[2],NULL,function2, NULL);
-			pthread_join(tid[2],NULL);
-			break;
-      
-      		//case 3:  tạo tiểu trình C chạy hàm fun 3
-      
-      
-      
-      		case 4:  	pthread_create(&tid[3],NULL,function4, NULL);
-			pthread_join(tid[3],NULL);
-			break;
-            
-      		case 5: 
-			return 0;
-		}
+        //M[i].iBase no change;
+        M[i].iSize = iSizeNew;
+        printf("\nNew process allocated PID = %d from %d to %d", M[i].iPID, M[i].iBase, M[i].iBase + M[i].iSize - 1);
+        printf("\nNew hole left over from %d to %d\n", M[i + 1].iBase, M[i + 1].iBase + M[i + 1].iSize - 1);
+        return 0;
       }
+    } // hole found
+  } // end of for
+  printf("\nFailure to allocate memory.\n");
+
+}
+
+void * fTerminate(void * param) {
+  int iTerminated;
+  printf("\nWhich PID terminate? ");
+  scanf("%d", & iTerminated);
+  for (int i = 0; i < iHoleCount; i++) {
+    if (iTerminated == M[i].iPID) {
+      M[i].iPID = -1;
+      printf("\nProcess %d has been removed. Memory from %d to %d is free.", M[i].iPID, M[i].iBase, M[i].iBase + M[i].iSize - 1);
+      return 0;
+    }
+  }
+  printf("Process %d cannot be found.", iTerminated);
+  return 0;
+}
+
+void * fCompact(void * param) {}
+
+void * fStatic(void * param) {
+  printf("\nStatic of memory \n");
+  for (int i = 0; i < iHoleCount; i++) {
+    if (M[i].iPID == -1)
+      printf("Address [%d : %d]: Unused\n", M[i].iBase, M[i].iBase + M[i].iSize - 1);
+    else printf("Address [%d : %d]: ProcessID %d\n", M[i].iBase, M[i].iBase + M[i].iSize - 1, M[i].iPID);
+  }
+}
+
+int main(int argc, char * argv[]) {
+  int iOption; //Chon lua trong menu	
+
+  M[iHoleCount].iSize = atoi(argv[1]); // truyền kích thước vào khi gọi chạy   
+  M[iHoleCount].iPID = -1;
+  M[iHoleCount].iBase = 0; // start of memory
+  iHoleCount++;
+
+  while (true) {
+    printf("\nChon option:   1-Cap phat   2-Thu hoi   3-Gom cum   4-Thong ke  5-Thoat  \n");
+    scanf("%d", & iOption);
+    switch (iOption) {
+    case 1:
+
+      pthread_create( & tid[1], NULL, fAllocation, NULL);
+      pthread_join(tid[1], NULL);
+      break;
+    case 2:
+      pthread_create( & tid[2], NULL, fTerminate, NULL);
+      pthread_join(tid[2], NULL);
+      break;
+
+    case 3:
+      pthread_create( & tid[3], NULL, fCompact, NULL);
+      pthread_join(tid[3], NULL);
+      break;
+
+    case 4:
+      pthread_create( & tid[4], NULL, fStatic, NULL);
+      pthread_join(tid[4], NULL);
+      break;
+
+    case 5:
+      return 0;
+
+    default:
+      printf("\nVui long chon 1 - 5.\n");
+    }
+  }
 }
