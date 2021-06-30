@@ -30,6 +30,8 @@ int allocation[NUMBER_OF_CUSTOMERS][NUMBER_OF_RESOURCES] = {
 int need[NUMBER_OF_CUSTOMERS][NUMBER_OF_RESOURCES];
 
 int safety_algorithm(int * available);
+int request_resources(int customer_num, int request[]);
+void release_resources(int customer_num, int release[]);
 
 int main(int argc, char ** argv) {
   // 
