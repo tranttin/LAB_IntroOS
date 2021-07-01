@@ -86,7 +86,7 @@ int main(int argc, char * argv[]) {
   M[iHoleCount].iSize = atoi(argv[1]); // truyền kích thước vào khi gọi chạy   
   M[iHoleCount].iPID = -1;
   M[iHoleCount].iBase = 0; // start of memory
-  iHoleCount++;
+  iHoleCount=1;
   while (true) {
     printf("\nChon option:   1-Cap phat   2-Thu hoi   3-Gom cum   4-Thong ke  5-Thoat  \n");
     scanf("%d", & iOption);
