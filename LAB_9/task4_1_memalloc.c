@@ -1,3 +1,6 @@
+// 2021 June 20
+// Author: Tran Trung Tin
+// Demo of Continuous Allocation in Memory
 #include <pthread.h>
 
 #include <stdio.h>
@@ -31,28 +34,25 @@ void * fAllocation(void * param) {
         M[i].iPID = iPIDcount++;
         //M[i].iBase no change
         //M[i].iSize no change
-
         printf("\nNew process allocated PID = %d from %d to %d\n", M[i].iPID, M[i].iBase, M[i].iBase + M[i].iSize - 1);
         return 0;
-      } else if (M[i].iSize > iSizeNew) { // allocate to this hole, but left a new smaller hole 
+      } 
+      else if (M[i].iSize > iSizeNew) { // allocate to this hole, but left a new smaller hole 
         iHoleCount++;
         for (int j = iHoleCount; j > i + 1; j--) M[j] = M[j - 1]; //shift right all hole to make new hole.
-
         M[i + 1].iPID = -1;
         M[i + 1].iSize = M[i].iSize - iSizeNew;
         M[i + 1].iBase = M[i].iBase + iSizeNew;
         M[i].iPID = iPIDcount++;
-
         //M[i].iBase no change;
         M[i].iSize = iSizeNew;
         printf("\nNew process allocated PID = %d from %d to %d", M[i].iPID, M[i].iBase, M[i].iBase + M[i].iSize - 1);
         printf("\nNew hole left over from %d to %d\n", M[i + 1].iBase, M[i + 1].iBase + M[i + 1].iSize - 1);
         return 0;
       }
-    } // hole found
+    } // end of hole found
   } // end of for
-  printf("\nFailure to allocate memory.\n");
-
+  printf("\nFailure to allocate memory.\n");  // no hole fit
 }
 
 void * fTerminate(void * param) {
@@ -83,18 +83,15 @@ void * fStatic(void * param) {
 
 int main(int argc, char * argv[]) {
   int iOption; //Chon lua trong menu	
-
   M[iHoleCount].iSize = atoi(argv[1]); // truyền kích thước vào khi gọi chạy   
   M[iHoleCount].iPID = -1;
   M[iHoleCount].iBase = 0; // start of memory
   iHoleCount++;
-
   while (true) {
     printf("\nChon option:   1-Cap phat   2-Thu hoi   3-Gom cum   4-Thong ke  5-Thoat  \n");
     scanf("%d", & iOption);
     switch (iOption) {
     case 1:
-
       pthread_create( & tid[1], NULL, fAllocation, NULL);
       pthread_join(tid[1], NULL);
       break;
@@ -102,20 +99,16 @@ int main(int argc, char * argv[]) {
       pthread_create( & tid[2], NULL, fTerminate, NULL);
       pthread_join(tid[2], NULL);
       break;
-
     case 3:
       pthread_create( & tid[3], NULL, fCompact, NULL);
       pthread_join(tid[3], NULL);
       break;
-
     case 4:
       pthread_create( & tid[4], NULL, fStatic, NULL);
       pthread_join(tid[4], NULL);
       break;
-
     case 5:
       return 0;
-
     default:
       printf("\nVui long chon 1 - 5.\n");
     }
