@@ -29,11 +29,11 @@ void * fAllocation(void * param) {
 
   for (int i = 0; i < iHoleCount; i++) {
     if (M[i].iPID == -1) {
+      if (M[i].iSize < iSizeNew) continue;
       if (M[i].iSize == iSizeNew) {
         // allocate to replace this hole, no new hole left.
         M[i].iPID = iPIDcount++;
-        //M[i].iBase no change
-        //M[i].iSize no change
+        //M[i].iBase and   iSize no change
         printf("\nNew process allocated PID = %d from %d to %d\n", M[i].iPID, M[i].iBase, M[i].iBase + M[i].iSize - 1);
         return 0;
       } 
