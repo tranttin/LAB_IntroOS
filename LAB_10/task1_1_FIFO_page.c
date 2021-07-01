@@ -70,17 +70,17 @@ void fTranslate(int iVirtualAdd) {
   int iPage = iVirtualAdd / OFFSET;
   int iOffset = iVirtualAdd % OFFSET;
 
-  int iFrame1 = fTLBLook(iPage);
-  int iFrame2 = fPageTable(iPage);
-  if (iFrame1 != -1) {
+  int iFrame = fTLBLook(iPage);
+  if (iFrame != -1) {
     printf(" TLB hit  ");
-    int PhysicAdd = iFrame1 * OFFSET + iOffset;
+    int PhysicAdd = iFrame * OFFSET + iOffset;
     printf(" Memory 0x%05d, Content = %c ", PhysicAdd, MEM[PhysicAdd]);
     return;
   } else {
     printf(" TLB_miss ");
-    if (iFrame2 != -1) { //Page in memory
-      int PhysicAdd = iFrame2 * OFFSET + iOffset;
+    iFrame = fPageTable(iPage);
+    if (iFrame != -1) { //Page in memory
+      int PhysicAdd = iFrame * OFFSET + iOffset;
       printf(" Memory 0x%05d, Content = %c ", PhysicAdd, MEM[PhysicAdd]);
       return;
     } else {
@@ -88,7 +88,6 @@ void fTranslate(int iVirtualAdd) {
       printf(" Page_fault ");
       iPageFault++;
       fFIFO(iPage);
-
       //Restart
       fTranslate(iVirtualAdd);
     }
