@@ -118,11 +118,11 @@ void fFIFO(int iPage) {
 
   if (PageTable[iPage].bDirty == true) fSwapOut(iPage); //Swap out if the victim page has been modified
 
+  fSwapIn(iPage, CLOCK_PTB * OFFSET);
+  
   PageTable[iPage].iFrame = CLOCK_PTB; //CLOCK_PTB is the frame
   PageTable[iPage].bVaild = true;
   PageTable[iPage].bDirty = false;
-
-  fSwapIn(iPage, CLOCK_PTB * OFFSET);
 
   TLB[CLOCK_TLB].bVaild = true;
   TLB[CLOCK_TLB].iFrame = CLOCK_PTB;
