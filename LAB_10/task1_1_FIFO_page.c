@@ -1,5 +1,6 @@
-#include <pthread.h>
-
+// 2021 June 20
+// Author: Tran Trung Tin
+// Demo a virtual memory management
 #include <stdio.h>
 
 #include <stdbool.h>
@@ -21,14 +22,13 @@ char MEM[PAGE_TABLE_SIZE * OFFSET];
 struct PageEntry {
   bool bVaild;
   int iFrame; ////Page p in frame f  is presented by iPage[p] = f
-  bool bDirty;
-};
+  bool bDirty;    };
 
 struct TLBEntry {
   int iPage;
   int iFrame;
   bool bVaild;
-};
+  bool bDirty;    };
 
 struct PageEntry PageTable[PAGE_TABLE_SIZE];
 struct TLBEntry TLB[TLB_SIZE];
