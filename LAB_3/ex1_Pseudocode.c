@@ -12,7 +12,7 @@
 int main() {
   pid_t pid;
   
-  // khai báo biến toàn cục n và biến tổng S
+  // khai báo biến toàn cục n
   // lấy giá trị n vào từ lời gọi
   
   /* fork a child process */
@@ -25,12 +25,16 @@ int main() {
     /* child process */
     
     // vòng lặp tính tổng S
+    // in ra S
     
   } else {
     /* parent process */
+    // tính ước số 
+    // in ra
+    
     wait(NULL);
     
-    // in tổng S ra màn hình.
+    
   }
   return 0;
 }
