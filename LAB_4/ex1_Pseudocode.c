@@ -1,1 +1,46 @@
-1. (Bài tập 4.22) Viết chương trình đa luồng tính toán các giá trị thống kê khác nhau từ một danh sách các số được truyền vào thông qua đối số của dòng lệnh. Chương trình sau đó sẽ tạo ba tiểu trình tính toán riêng biệt. Một tiểu trình sẽ xác định trung bình cộng của các số, tiểu trình thứ hai sẽ xác định giá trị lớn nhất và tiểu trình thứ ba sẽ xác định giá trị nhỏ nhất. Ví dụ:
+// 2021 June 2
+// Author: Abraham Silberschatz  in book Operating System Concepts 8th Edition p.170
+// Demo using how to speed up sum of sequence integer.
+#include<pthread.h>
+
+#include<stdio.h>
+
+#include<stdlib.h>
+
+int ave,min,max; /* this data is shared by the thread(s) */
+void * runner(void * param); /* threads call this function */
+int main(int argc, char * argv[]) {
+  pthread_t tid[3]; /* the thread identifier */
+  pthread_attr_t attr; /* set of thread attributes */
+  /* set the default attributes of the thread */
+  pthread_attr_init( & attr);
+  /* create the thread */
+  pthread_create( & tid[0], & attr, trungbinh, argv[1]);
+    pthread_create( & tid[1], & attr, lonnhat, argv[1]);
+    pthread_create( & tid[2], & attr, nhonhat, argv[1]);
+  /* wait for the thread to exit */
+  pthread_join(tid[0], NULL);
+    pthread_join(tid[1], NULL);
+    pthread_join(tid[2], NULL);
+  printf("sum = %d∖n", sum);
+}
+/* The thread will execute in this function */
+void * trungbinh(void * param) {
+  int upper = atoi(param);
+  // tìm trung bình
+  pthread_exit(0);
+}
+
+/* The thread will execute in this function */
+void * lonnhat(void * param) {
+  int upper = atoi(param);
+  // tìm mã
+  pthread_exit(0);
+}
+
+/* The thread will execute in this function */
+void * nhonhat(void * param) {
+  int upper = atoi(param);
+  // tìm min
+  pthread_exit(0);
+}
