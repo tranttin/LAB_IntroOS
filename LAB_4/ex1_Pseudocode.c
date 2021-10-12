@@ -8,14 +8,25 @@
 #include<stdlib.h>
 
 int ave,min,max; /* this data is shared by the thread(s) */
+
+struct mang {
+int a[100];
+int size;
+};
+
+struct mang A;
+
 void * runner(void * param); /* threads call this function */
 int main(int argc, char * argv[]) {
+  
+  // thêm data vào struct mang A;
+  
   pthread_t tid[3]; /* the thread identifier */
   pthread_attr_t attr; /* set of thread attributes */
   /* set the default attributes of the thread */
   pthread_attr_init( & attr);
   /* create the thread */
-  pthread_create( & tid[0], & attr, trungbinh, argv[1]);
+  pthread_create( & tid[0], & attr, trungbinh, (void *) &A);
     pthread_create( & tid[1], & attr, lonnhat, argv[1]);
     pthread_create( & tid[2], & attr, nhonhat, argv[1]);
   /* wait for the thread to exit */
@@ -33,7 +44,9 @@ void * trungbinh(void * param) {
 
 /* The thread will execute in this function */
 void * lonnhat(void * param) {
-  int upper = atoi(param);
+struct mang *B = (struct mang*) param;
+  int i;
+ for(i=0; i < B->size ; i++) //do something
   // tìm mã
   pthread_exit(0);
 }
