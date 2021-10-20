@@ -1,6 +1,6 @@
-// 2021 June 2
+// 2021 October 20
 // Author: Abraham Silberschatz  in book Operating System Concepts 10th Edition p.170
-// Demo using ordinary pipe
+// Ideas for excercise 3 in lab 5.1
 #include <sys/types.h>
 
 #include <stdio.h>
