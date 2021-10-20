@@ -1,34 +1,59 @@
-    if (pid == 0)
-    { //child code
-      sleep(1); // for a nice output
-      char buff[256];
-      close(fd[1]);
+// 2021 June 2
+// Author: Abraham Silberschatz  in book Operating System Concepts 10th Edition p.170
+// Idea for Excercise 1
+#include <sys/types.h>
 
-      while (read(fd[0], buff, sizeof(buff)) > 0)
+#include <stdio.h>
+
+#include <string.h>
+
+#include <unistd.h>
+
+#define READ_END 0
+#define WRITE_END 1
+int main(int argc, char ** argv) {
+  int fd[2];
+  pid_t pid;
+  /* create the pipe */
+  if (pipe(fd) == -1) {
+    fprintf(stderr, "Pipe failed");
+    return 1;
+  }
+  /* fork a child process */
+  pid = fork();
+  if (pid < 0) {
+    /* error occurred */
+    fprintf(stderr, "Fork Failed");
+    return 1;
+  }
+  if (pid > 0) {
+    /* parent process */
+    /* close the unused end of the pipe */
+    //đóng đầu đọc
+    /* write to the pipe */
+    int i;
+    for (i = 1; i < argc; i++) {
+        write(???, argv[i], strlen(???)+1);
+        printf("Parent send %s\n", argv[i]);
+		sleep(1);  //chờ 1 lát
+	    // đóng đầu đọc
+ 	}
+    /* close the write end of the pipe */
+    // đóng đầu ghi
+    // chờ tiến trình con
+  } else {
+    /* child process */
+    /* close the unused end of the pipe */
+    // đóng đầu ghi
+    /* read from the pipe */
+    char buff[256];
+    while (read(fd[READ_END], buff, sizeof(buff)) > 0)
       {
         printf("Read child = %s\n", buff);
+	    // đóng đầu ghi
       }
-      close(fd[0]); // neccessary
-      exit(0);
-    }
-
-  else{//parent
-
-      close(fd[0]);
-
-      int i;
-      int str_len = 256;
-      char str[str_len];
- 
-
-      for (i = 1; i < argc; i++)
-      {
-        //Gửi từng đối số argv[i] đi
-        close(fd[0]); // neccessary
-        write(fd[1], argv[i], strlen(???));
-        printf("Parent send %s\n", argv[i]);
-      }
-      close(fd[1]); // neccessary
-      wait(NULL);
-    }
+    /* close the read end of the pipe */
+    // đóng đầu đọc
   }
+  return 0;
+}
