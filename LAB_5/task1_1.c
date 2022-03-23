@@ -14,6 +14,7 @@ int main() {
   if (pid == 0) {
     /* child process */
     value += 15;
+    printf("CHILD: value = %d", value); /* LINE A1 */
     return 0;
   } else if (pid > 0) {
     /* parent process */
