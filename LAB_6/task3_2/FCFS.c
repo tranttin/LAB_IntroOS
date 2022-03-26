@@ -10,6 +10,7 @@ void * FCFS(void * param) {
   int t_wait = 0, t_taround = 0;
   int time = 0;
   //SORTING ARRIVAL TIME
+  //Sắp xếp mảng cấu trúc task với key là thời điểm đến
   for (int i = 0; i < process; i++) {
     run( & task[i], time, task[i].burst); //Run from time to time+burst
     time += task[i].burst; //moving to next P
