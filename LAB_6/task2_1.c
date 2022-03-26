@@ -77,7 +77,7 @@ int main(int argc, char * argv[]) {
   /* ### end of section to be measured ### */
 
   printf("\nGettimeofday() method: %ldus", (endwatch.tv_sec - startwatch.tv_sec) * 1000000 + (endwatch.tv_usec - startwatch.tv_usec));
-  printf("\nUoc tinh PI =  %f\n", (float) counter / (n_thread * atoi(argv[2])) * 4);
+  printf("\nUoc tinh PI =  %f\n", (float) counter / (n_thread * atoi(argv[1])) * 4);
   return 0;
 }
 
