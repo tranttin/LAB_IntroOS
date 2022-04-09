@@ -11,9 +11,7 @@ def thread_task(lock):
     y=random.random()
     dist = math.sqrt (x*x + y * y)
     if (dist < 1.0): 
-      lock.acquire()
       counter=counter+1;
-      lock.release()
 
 def main():
   # creating a lock
