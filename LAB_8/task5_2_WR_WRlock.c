@@ -1,21 +1,21 @@
-// 2021 Apr 21
+// 2022 Apr 17 //Fix space in include
 // Author: Tran Trung Tin based on Book Operating System Concepts 10th, p.270
 // Writer-Reader (Variation 1) by WR-lock
-# include < stdio.h >
+# include <stdio.h>
   
-# include < stdlib.h >
+# include <stdlib.h>
   
-# include < time.h >
+# include <time.h>
   
-# include < sys / types.h >
+# include <sys/types.h>
   
-# include < pthread.h >
+# include <pthread.h>
  
-# include < semaphore.h >
+# include <semaphore.h>
   
-# include < string.h >
+# include <string.h>
  
-# include < unistd.h >
+# include <unistd.h>
 
   pthread_rwlock_t lock;
 
