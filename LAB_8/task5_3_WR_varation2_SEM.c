@@ -1,21 +1,21 @@
 // 2021 Apr 21
 // Author: Tran Trung Tin based on Book Operating System Concepts 10th, p.270
 // Writer-Reader (Variation 2) by sem_t
-# include < stdio.h >
+# include <stdio.h>
 
-# include < stdlib.h >
+# include <stdlib.h>
 
-# include < time.h >
+# include <time.h>
 
-# include < sys / types.h >
+# include <sys/types.h>
 
-# include < pthread.h >
+# include <pthread.h>
 
-# include < semaphore.h >
+# include <semaphore.h>
 
-# include < string.h >
+# include <string.h>
 
-# include < unistd.h >
+# include <unistd.h>
   //semaphores
 sem_t RWMutex, mutex1, mutex2, mutex3, wrt;
 int writeCount, readCount;
