@@ -163,7 +163,7 @@ int main(int argc, char * argv[]) {
 
     fclose(fp);
     for (int i = 0; i < SEQ - 1; i++) fTranslate(LogicMem[i]);
-    printf("\n\nOverall Page Fault Rate = %f\n", iPageFault * 1.0 / SEQ);
+    printf("\n\nOverall Page Fault Rate = %f\n", iPageFault * 1.0 / (SEQ-1));
 
   }
 
