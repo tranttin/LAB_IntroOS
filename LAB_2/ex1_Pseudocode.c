@@ -5,17 +5,21 @@
 // b. Báo lỗi nếu có nhiều hơn 2 đối số (là main.out và n).
 
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char ** argv) {
-  if(argc != ???? ) 
+  int n;
+  if(argc != 2 ) 
   {
     printf("Number of arguments wrong (case b.)");
     return -1;
   }
   
   else
-    int n = atoi(argv[n]);
-  printf("\nn= %d", n);
+  {
+    n = atoi(argv[1]);
+    printf("\nn= %d", n);
+  }
   
   return 0;
 }
