@@ -2,7 +2,7 @@
 // Creator: Tran Trung Tin
 // Demo using system call fork to create a child process which execute command ls by execlp.
 #include <sys/types.h>
-
+#include <sys/wait.h>
 #include <stdio.h>
 
 #include <unistd.h>
