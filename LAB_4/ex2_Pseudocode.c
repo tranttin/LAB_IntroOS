@@ -37,7 +37,7 @@ int main(int argc, char * argv[]) {
 
 /* The thread will execute in this function */
 void * songuyento(void * param) {
-struct partition X * = (struct partition *) param;
+struct partition *X = (struct partition *) param;
 int start = X->start;
 int end = X->end;
  for(i=start; i < end ; i++) //do something
