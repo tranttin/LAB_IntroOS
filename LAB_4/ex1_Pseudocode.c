@@ -9,13 +9,8 @@
 
 int ave,min,max; /* this data is shared by the thread(s) */
 
-struct mang {
 int a[100];
 int size;
-};
-
-struct mang A;
-int n;
 
 void * runner(void * param); /* threads call this function */
 // nguyên mẫu các hàm gửi cho thread con
