@@ -7,8 +7,6 @@
 
 #include<stdlib.h>
 
-int ave,min,max; /* this data is shared by the thread(s) */
-
 struct partition {
 int start;
 int end;
