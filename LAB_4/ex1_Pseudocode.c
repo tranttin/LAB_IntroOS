@@ -15,8 +15,11 @@ int size;
 };
 
 struct mang A;
+int n;
 
 void * runner(void * param); /* threads call this function */
+// nguyên mẫu các hàm gửi cho thread con
+
 int main(int argc, char * argv[]) {
   
   // thêm data vào struct mang A;
@@ -26,28 +29,24 @@ int main(int argc, char * argv[]) {
   /* set the default attributes of the thread */
   pthread_attr_init( & attr);
   /* create the thread */
-  pthread_create( & tid[0], & attr, trungbinh, (void *) &A);
-    pthread_create( & tid[1], & attr, lonnhat, argv[1]);
-    pthread_create( & tid[2], & attr, nhonhat, argv[1]);
+  pthread_create( & tid[0], & attr, trungbinh, NULL);
+    pthread_create( & tid[1], & attr, lonnhat, NULL);
+    pthread_create( & tid[2], & attr, nhonhat, NULL);
   /* wait for the thread to exit */
-  pthread_join(tid[0], NULL);
+     pthread_join(tid[0], NULL);
     pthread_join(tid[1], NULL);
     pthread_join(tid[2], NULL);
-  printf("sum = %d∖n", sum);
 }
 /* The thread will execute in this function */
 void * trungbinh(void * param) {
-  int upper = atoi(param);
+  
   // tìm trung bình
   pthread_exit(0);
 }
 
 /* The thread will execute in this function */
 void * lonnhat(void * param) {
-struct mang *B = (struct mang*) param;
-  int i;
- for(i=0; i < B->size ; i++) //do something
-  // tìm mã
+  // tìm max
   pthread_exit(0);
 }
 
