@@ -7,9 +7,9 @@
 
 #include<stdlib.h>
 
-int ave,min,max; /* this data is shared by the thread(s) */
-
-int a[100];
+int min,max; /* this data is shared by the thread(s) */
+float ave;
+int a[100];  /* the shared array */
 int size;
 
 void * runner(void * param); /* threads call this function */
