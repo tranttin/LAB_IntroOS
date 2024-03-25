@@ -2,7 +2,45 @@
 // Author: Tran Trung Tin
 // Reading file and import to array to run scheduling algorithm
 
-#include "task.h"
+#ifndef TASK_H
+#define TASK_H
+
+// representation of a task
+typedef struct task { //process
+    char *name;
+    int tid;
+    int priority;
+    int burst;
+    int arrival;
+} Task;
+
+#endif
+
+#include<pthread.h>
+
+#include<stdio.h>
+
+#include<stdlib.h>
+
+#include <string.h>
+
+/* gettimeofday */ #include <sys/time.h>
+
+/* clock */ #include <time.h>
+
+#include <sys/sysinfo.h>
+
+#include <math.h>
+
+#include <sys/syscall.h>
+
+#include <unistd.h>
+#define SIZE    100
+
+Task task[SIZE];
+void * FCFS(void * param);
+void run(Task *task, int start, int slice);
+
  // maximum number of threads 
 #define MAX_THREAD 5
 
@@ -26,7 +64,7 @@ int main(int argc, char * argv[]) {
   gettimeofday( & endwatch, NULL);
   /* ### end of section to be measured ### */
 
-  printf("\nRunningd: %ldus\n", (endwatch.tv_sec - startwatch.tv_sec) * 1000000 + (endwatch.tv_usec - startwatch.tv_usec));
+  printf("\nRunning: %ldus\n", (endwatch.tv_sec - startwatch.tv_sec) * 1000000 + (endwatch.tv_usec - startwatch.tv_usec));
   return 0;
 }
 
