@@ -72,4 +72,3 @@ void * runner(void * param) {
   printf("\nThread %d finished.", tid);
   pthread_exit(0);
 }
-© 2021 GitHub, Inc.
