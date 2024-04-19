@@ -40,7 +40,7 @@ void * do_work_one(void * param) {
     sleep(1);
     if (pthread_mutex_trylock( & second_mutex)) {
       // Do some work
-      printf("\nThread 1 reaech this point.");
+      printf("\nThread 1 reached this point.");
 
       pthread_mutex_unlock( & second_mutex);
       pthread_mutex_unlock( & first_mutex);
@@ -61,7 +61,7 @@ void * do_work_two(void * param) {
     sleep(1);
     if (pthread_mutex_trylock( & first_mutex)) {
       // Do some work
-      printf("\nThread 2 reaech this point.");
+      printf("\nThread 2 reached this point.");
       pthread_mutex_unlock( & first_mutex);
       pthread_mutex_unlock( & second_mutex);
       done = 1;
