@@ -3,6 +3,7 @@
 Code demo của Chương 1
 
 Cách 1: Tải về toàn bộ thư mục, mở file Jupyter notebook trong môi trường Bash (Linux) và có thể thực thi trực tiếp. Sử dụng Cocalc.com và tạo project là một cách thuận tiện.
+
 Cách 2: Tải về toàn bộ thư mục, mở Terminal (Linux) và gõ lệnh make để biên dịch toàn bộ, sau đó thực thi từng lời gọi.
 ```
 prompt> make
