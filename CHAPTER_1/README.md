@@ -1,56 +1,32 @@
 # Overview
 
-Code from OSTEP chapter [Introduction](http://pages.cs.wisc.edu/~remzi/OSTEP/intro.pdf).
+Code demo của Chương 1
 
-To compile, just type:
+Cách 1: Tải về toàn bộ thư mục, mở file Jupyter notebook trong môi trường Bash (Linux) và có thể thực thi trực tiếp.
+Cách 2: Tải về toàn bộ thư mục, mở Terminal (Linux) và gõ lệnh make để biên dịch toàn bộ, sau đó thực thi từng lời gọi.
 ```
 prompt> make
 ```
 
-See the highly primitive `Makefile` for details.
-
-Then, run them! Examples:
+Demo "cpu" mô tả quá trình phân phối quyền sử dụng CPU trong 2 trường hợp: đơn tác vụ và đa tác vụ.
 
 ```
 prompt> ./cpu A
 ```
 
+Demo "mem" mô tả địa chỉ ảo của chương trình và địa chỉ vật lý khi hệ điều hành cấp phát.
+
 ```
 prompt> ./mem 1
 ```
 
+Demo "threads" mô tả vấn đề cạnh tranh và sai dữ liệu khi nhiều luồng chạy đồng thời.
 ```
 prompt> ./threads 10000
 ```
-
+Demo "io" mô tả vấn đề nhập xuất bằng các thiết bị ngoại vi.
 ```
 prompt> ./io
 ```
-
-
-## Details
-
-One issue with mem.c is that address space randomization is usually on by
-default. To turn it off:
-
-### macOS
-From [stackoverflow](http://stackoverflow.com/questions/23897963/documented-way-to-disable-aslr-on-os-x)
-
-Just compile/link as follows:
-    gcc -o mem mem.c -Wall -Wl,-no_pie
-
-### Linux
-
-From Giovanni Lagorio:
-
-Under Linux you can disable ASLR, without using a debugger, in (at least)  two ways:
-* Use the command setarch to run a process with ASLR disabled; I typically run
-  bash, with which I can execute examples, like this:
-  `setarch $(uname --machine) --addr-no-randomize /bin/bash`
-* Writing 0 into `/proc/sys/kernel/randomize_va_space`; you need to be
-  root to do this and this change has (a non-permanent) effect on the
-  whole system, which is something you probably don't want. I use this
-  one only inside VMs.
-
 
 
