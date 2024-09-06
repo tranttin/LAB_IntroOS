@@ -1,0 +1,1 @@
+This is the source file containing the original content to be copied to another file. The content is used to demonstrate the process of copying data and performing system calls of related operating systems. The lecture is prepared by trantrungtin@tdtu.edu.vn
