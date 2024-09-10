@@ -1,5 +1,6 @@
 #include <stdio.h>
-#include "support.h"  // Bao gồm file header của support
+#include "supportA.h"  // Bao gồm hàm kiểm tra số nguyên tố
+#include "supportB.h"  // Bao gồm hàm tính diện tích hình tròn
 
 #define N 100  // Đặt hằng số N = 100
 
