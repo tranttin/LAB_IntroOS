@@ -1,4 +1,4 @@
-//Warning: this code is not sychronized
+//Warning: this code is not synchronized
 
 #include <stdio.h>
 #include <stdlib.h>
