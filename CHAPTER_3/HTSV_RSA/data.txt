@@ -1,0 +1,100 @@
+5001: Thứ Ba Ca 4 Thứ Ba Ca 1 Thứ Hai Ca 4 Thứ Sáu Ca 1 Thứ Tư Ca 2
+5002: Thứ Sáu Ca 3 Thứ Ba Ca 2 Thứ Tư Ca 1 Thứ Tư Ca 4 Thứ Ba Ca 3
+5003: Thứ Hai Ca 2 Thứ Tư Ca 2 Thứ Hai Ca 3
+5004: Thứ Năm Ca 4 Thứ Hai Ca 3 Thứ Hai Ca 2
+5005: Thứ Sáu Ca 3 Thứ Hai Ca 1 Thứ Sáu Ca 1 Thứ Năm Ca 1 Thứ Ba Ca 4
+5006: Thứ Sáu Ca 1 Thứ Tư Ca 2 Thứ Sáu Ca 3 Thứ Ba Ca 3
+5007: Thứ Ba Ca 4 Thứ Năm Ca 4 Thứ Năm Ca 2 Thứ Ba Ca 1 Thứ Tư Ca 4
+5008: Thứ Năm Ca 1 Thứ Hai Ca 1 Thứ Tư Ca 1 Thứ Tư Ca 2
+5009: Thứ Ba Ca 1 Thứ Tư Ca 3 Thứ Tư Ca 2
+5010: Thứ Ba Ca 2 Thứ Hai Ca 1 Thứ Tư Ca 3 Thứ Sáu Ca 2 Thứ Tư Ca 1
+5011: Thứ Ba Ca 3 Thứ Ba Ca 1 Thứ Sáu Ca 2
+5012: Thứ Sáu Ca 2 Thứ Tư Ca 2 Thứ Sáu Ca 1
+5013: Thứ Năm Ca 4 Thứ Sáu Ca 4 Thứ Ba Ca 1 Thứ Tư Ca 1 Thứ Ba Ca 2
+5014: Thứ Tư Ca 2 Thứ Năm Ca 3 Thứ Sáu Ca 3
+5015: Thứ Hai Ca 2 Thứ Năm Ca 4 Thứ Tư Ca 4 Thứ Ba Ca 1 Thứ Hai Ca 4
+5016: Thứ Hai Ca 2 Thứ Năm Ca 2 Thứ Năm Ca 1
+5017: Thứ Tư Ca 2 Thứ Năm Ca 1 Thứ Ba Ca 2 Thứ Hai Ca 3
+5018: Thứ Hai Ca 3 Thứ Tư Ca 1 Thứ Ba Ca 4
+5019: Thứ Tư Ca 4 Thứ Tư Ca 3 Thứ Năm Ca 4 Thứ Ba Ca 2
+5020: Thứ Tư Ca 1 Thứ Hai Ca 2 Thứ Hai Ca 4 Thứ Ba Ca 1 Thứ Ba Ca 3
+5021: Thứ Hai Ca 1 Thứ Sáu Ca 4 Thứ Năm Ca 1 Thứ Năm Ca 4 Thứ Tư Ca 1
+5022: Thứ Năm Ca 2 Thứ Sáu Ca 1 Thứ Ba Ca 1 Thứ Năm Ca 3
+5023: Thứ Hai Ca 2 Thứ Ba Ca 1 Thứ Hai Ca 3
+5024: Thứ Sáu Ca 3 Thứ Tư Ca 3 Thứ Năm Ca 3 Thứ Ba Ca 1 Thứ Tư Ca 1
+5025: Thứ Năm Ca 1 Thứ Năm Ca 4 Thứ Tư Ca 4 Thứ Sáu Ca 3 Thứ Sáu Ca 1
+5026: Thứ Hai Ca 1 Thứ Sáu Ca 3 Thứ Sáu Ca 2 Thứ Năm Ca 3
+5027: Thứ Hai Ca 3 Thứ Năm Ca 2 Thứ Sáu Ca 1
+5028: Thứ Tư Ca 3 Thứ Tư Ca 1 Thứ Năm Ca 1 Thứ Năm Ca 4 Thứ Năm Ca 3
+5029: Thứ Hai Ca 1 Thứ Ba Ca 3 Thứ Tư Ca 1
+5030: Thứ Hai Ca 2 Thứ Năm Ca 2 Thứ Tư Ca 4 Thứ Ba Ca 2
+5031: Thứ Tư Ca 1 Thứ Năm Ca 1 Thứ Hai Ca 1 Thứ Sáu Ca 3
+5032: Thứ Năm Ca 4 Thứ Hai Ca 4 Thứ Tư Ca 1 Thứ Hai Ca 2
+5033: Thứ Tư Ca 4 Thứ Năm Ca 3 Thứ Năm Ca 1 Thứ Năm Ca 4
+5034: Thứ Sáu Ca 3 Thứ Tư Ca 3 Thứ Sáu Ca 1 Thứ Ba Ca 3 Thứ Tư Ca 4
+5035: Thứ Ba Ca 1 Thứ Năm Ca 2 Thứ Sáu Ca 4
+5036: Thứ Tư Ca 4 Thứ Ba Ca 4 Thứ Ba Ca 1
+5037: Thứ Ba Ca 4 Thứ Năm Ca 2 Thứ Sáu Ca 4 Thứ Sáu Ca 2 Thứ Hai Ca 3
+5038: Thứ Sáu Ca 3 Thứ Ba Ca 3 Thứ Tư Ca 4 Thứ Sáu Ca 1
+5039: Thứ Năm Ca 1 Thứ Tư Ca 4 Thứ Năm Ca 2 Thứ Sáu Ca 2
+5040: Thứ Hai Ca 2 Thứ Ba Ca 1 Thứ Tư Ca 1 Thứ Tư Ca 2 Thứ Tư Ca 4
+5041: Thứ Năm Ca 4 Thứ Tư Ca 2 Thứ Sáu Ca 4 Thứ Hai Ca 3 Thứ Tư Ca 3
+5042: Thứ Năm Ca 2 Thứ Sáu Ca 4 Thứ Ba Ca 3 Thứ Tư Ca 4
+5043: Thứ Sáu Ca 4 Thứ Tư Ca 4 Thứ Hai Ca 4 Thứ Năm Ca 3
+5044: Thứ Ba Ca 3 Thứ Năm Ca 2 Thứ Hai Ca 3 Thứ Năm Ca 1 Thứ Ba Ca 1
+5045: Thứ Sáu Ca 4 Thứ Năm Ca 4 Thứ Năm Ca 3 Thứ Ba Ca 3
+5046: Thứ Tư Ca 4 Thứ Sáu Ca 4 Thứ Tư Ca 2 Thứ Hai Ca 3 Thứ Ba Ca 2
+5047: Thứ Tư Ca 1 Thứ Tư Ca 3 Thứ Sáu Ca 1
+5048: Thứ Tư Ca 2 Thứ Hai Ca 1 Thứ Hai Ca 3
+5049: Thứ Sáu Ca 1 Thứ Năm Ca 4 Thứ Sáu Ca 3 Thứ Ba Ca 3
+5050: Thứ Sáu Ca 3 Thứ Năm Ca 4 Thứ Hai Ca 4 Thứ Ba Ca 1 Thứ Hai Ca 2
+5051: Thứ Năm Ca 1 Thứ Tư Ca 4 Thứ Sáu Ca 1
+5052: Thứ Năm Ca 4 Thứ Ba Ca 4 Thứ Sáu Ca 2 Thứ Ba Ca 2
+5053: Thứ Tư Ca 4 Thứ Năm Ca 2 Thứ Hai Ca 2 Thứ Ba Ca 4
+5054: Thứ Ba Ca 1 Thứ Hai Ca 1 Thứ Năm Ca 4
+5055: Thứ Ba Ca 1 Thứ Tư Ca 1 Thứ Ba Ca 4 Thứ Ba Ca 2 Thứ Hai Ca 2
+5056: Thứ Năm Ca 2 Thứ Hai Ca 3 Thứ Tư Ca 2
+5057: Thứ Sáu Ca 1 Thứ Ba Ca 4 Thứ Hai Ca 1
+5058: Thứ Năm Ca 1 Thứ Tư Ca 1 Thứ Ba Ca 2 Thứ Sáu Ca 1 Thứ Tư Ca 2
+5059: Thứ Tư Ca 2 Thứ Tư Ca 1 Thứ Hai Ca 3 Thứ Hai Ca 2
+5060: Thứ Hai Ca 2 Thứ Ba Ca 1 Thứ Hai Ca 1 Thứ Hai Ca 3
+5061: Thứ Năm Ca 4 Thứ Tư Ca 3 Thứ Năm Ca 2 Thứ Hai Ca 2 Thứ Ba Ca 2
+5062: Thứ Tư Ca 2 Thứ Ba Ca 4 Thứ Năm Ca 3 Thứ Hai Ca 4
+5063: Thứ Sáu Ca 1 Thứ Ba Ca 4 Thứ Ba Ca 2 Thứ Hai Ca 2
+5064: Thứ Sáu Ca 1 Thứ Hai Ca 1 Thứ Ba Ca 2 Thứ Hai Ca 3 Thứ Năm Ca 2
+5065: Thứ Hai Ca 4 Thứ Ba Ca 3 Thứ Ba Ca 2 Thứ Tư Ca 2
+5066: Thứ Năm Ca 3 Thứ Hai Ca 3 Thứ Tư Ca 3 Thứ Ba Ca 1 Thứ Tư Ca 2
+5067: Thứ Năm Ca 1 Thứ Ba Ca 1 Thứ Năm Ca 3 Thứ Hai Ca 1
+5068: Thứ Sáu Ca 1 Thứ Ba Ca 2 Thứ Tư Ca 4
+5069: Thứ Tư Ca 4 Thứ Ba Ca 3 Thứ Tư Ca 3 Thứ Ba Ca 2
+5070: Thứ Năm Ca 3 Thứ Hai Ca 3 Thứ Tư Ca 2 Thứ Tư Ca 4 Thứ Hai Ca 4
+5071: Thứ Sáu Ca 3 Thứ Năm Ca 1 Thứ Ba Ca 3 Thứ Năm Ca 3
+5072: Thứ Ba Ca 1 Thứ Sáu Ca 3 Thứ Hai Ca 1 Thứ Tư Ca 4 Thứ Hai Ca 4
+5073: Thứ Hai Ca 1 Thứ Ba Ca 3 Thứ Sáu Ca 1
+5074: Thứ Hai Ca 3 Thứ Ba Ca 1 Thứ Năm Ca 3 Thứ Năm Ca 2
+5075: Thứ Ba Ca 4 Thứ Tư Ca 1 Thứ Ba Ca 1 Thứ Tư Ca 4 Thứ Sáu Ca 3
+5076: Thứ Hai Ca 3 Thứ Ba Ca 2 Thứ Năm Ca 4 Thứ Hai Ca 2 Thứ Tư Ca 4
+5077: Thứ Hai Ca 3 Thứ Năm Ca 1 Thứ Tư Ca 1
+5078: Thứ Hai Ca 2 Thứ Năm Ca 4 Thứ Ba Ca 4
+5079: Thứ Hai Ca 2 Thứ Sáu Ca 4 Thứ Tư Ca 3 Thứ Ba Ca 3
+5080: Thứ Năm Ca 2 Thứ Ba Ca 3 Thứ Năm Ca 4 Thứ Ba Ca 1
+5081: Thứ Ba Ca 2 Thứ Sáu Ca 3 Thứ Năm Ca 1
+5082: Thứ Ba Ca 2 Thứ Ba Ca 1 Thứ Ba Ca 4
+5083: Thứ Tư Ca 4 Thứ Sáu Ca 3 Thứ Tư Ca 1 Thứ Hai Ca 3 Thứ Sáu Ca 4
+5084: Thứ Ba Ca 3 Thứ Hai Ca 1 Thứ Năm Ca 3 Thứ Sáu Ca 2
+5085: Thứ Năm Ca 4 Thứ Năm Ca 2 Thứ Năm Ca 3 Thứ Hai Ca 1
+5086: Thứ Ba Ca 4 Thứ Sáu Ca 1 Thứ Hai Ca 2
+5087: Thứ Ba Ca 4 Thứ Ba Ca 1 Thứ Ba Ca 3 Thứ Năm Ca 3 Thứ Hai Ca 4
+5088: Thứ Tư Ca 4 Thứ Năm Ca 1 Thứ Sáu Ca 1
+5089: Thứ Hai Ca 3 Thứ Ba Ca 3 Thứ Hai Ca 1 Thứ Sáu Ca 2 Thứ Năm Ca 2
+5090: Thứ Ba Ca 4 Thứ Hai Ca 2 Thứ Hai Ca 4 Thứ Sáu Ca 2
+5091: Thứ Ba Ca 2 Thứ Sáu Ca 2 Thứ Tư Ca 2
+5092: Thứ Năm Ca 2 Thứ Tư Ca 3 Thứ Hai Ca 3 Thứ Sáu Ca 4
+5093: Thứ Hai Ca 4 Thứ Sáu Ca 1 Thứ Ba Ca 2
+5094: Thứ Hai Ca 4 Thứ Hai Ca 3 Thứ Tư Ca 2 Thứ Năm Ca 3 Thứ Sáu Ca 3
+5095: Thứ Hai Ca 2 Thứ Năm Ca 4 Thứ Hai Ca 4 Thứ Ba Ca 1 Thứ Ba Ca 2
+5096: Thứ Tư Ca 3 Thứ Tư Ca 1 Thứ Năm Ca 4 Thứ Sáu Ca 1 Thứ Ba Ca 1
+5097: Thứ Sáu Ca 3 Thứ Sáu Ca 4 Thứ Năm Ca 1 Thứ Tư Ca 4 Thứ Hai Ca 3
+5098: Thứ Năm Ca 3 Thứ Ba Ca 1 Thứ Tư Ca 4
+5099: Thứ Năm Ca 3 Thứ Hai Ca 3 Thứ Ba Ca 1 Thứ Hai Ca 4 Thứ Sáu Ca 2
+5100: Thứ Năm Ca 2 Thứ Năm Ca 4 Thứ Tư Ca 2 Thứ Ba Ca 4
